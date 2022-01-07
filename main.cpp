@@ -29,13 +29,6 @@ int main(int argc, char* argv[]) {
     dma_engine Dma_0;
     dma_engine *pDma_0 = &Dma_0;
 
-    printf("Dma_0\n"); 
-    printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n"); 
-    for(int i = 0;i <ADDRESS_SPACE;i++)
-    {
-        printf("Dma_0.Address[%d] [%#018" PRIx64 " ] \n",i,Dma_0.Address[i]);
-    }
-    printf("\n");
     printf("pDma_0\n"); 
     printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n"); 
     for(int i = 0;i <ADDRESS_SPACE;i++)
@@ -46,14 +39,6 @@ int main(int argc, char* argv[]) {
 
     data_engine Data_0;
     Dma_0.Address = &Data_0.data;
-
-    printf("Again Dma_0\n"); 
-    printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n"); 
-    for(int i = 0;i <ADDRESS_SPACE;i++)
-    {
-        printf("Dma_0.Address[%d] [%#018" PRIx64 " ] \n",i,Dma_0.Address[i]);
-    }
-    printf("\n");
 
     printf("Again pDma_0\n"); 
     printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n"); 
