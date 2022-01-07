@@ -10,7 +10,12 @@ using namespace std;
 
 struct dma_engine
 {
-    int *Address[ADDRESS_SPACE] = {nullptr};
+    int (*Address)[ADDRESS_SPACE] = {nullptr};
+};
+
+struct data_engine
+{
+    int data[ADDRESS_SPACE] = {0x10,0x14,0x18,0x1B,0x20,0x24,0x28,0x2B};
 };
 
 extern "C" unsigned long Return_4x_16bit_arguments(int arg_1, int arg_2, int arg_3, int arg_4);
@@ -18,24 +23,44 @@ extern "C" unsigned long Return_4x_16bit_arguments(int arg_1, int arg_2, int arg
 int main(int argc, char* argv[]) {
 
     system("clear");
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // Testing definition of null pointers in the struct
-    ////////////////////////////////////////////////////////a////////////////////////////////////////////////////
+    //
+    // Null pointer structure incremented every ---> 20h
+    //
     dma_engine Dma_0;
+    dma_engine *pDma_0 = &Dma_0;
 
+    printf("Dma_0\n"); 
+    printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n"); 
     for(int i = 0;i <ADDRESS_SPACE;i++)
     {
-        printf("Dma_0.Address[%d] [0x%x] \n",i,Dma_0.Address[i]);
+        printf("Dma_0.Address[%d] [%#018" PRIx64 " ] \n",i,Dma_0.Address[i]);
+    }
+    printf("\n");
+    printf("pDma_0\n"); 
+    printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n"); 
+    for(int i = 0;i <ADDRESS_SPACE;i++)
+    {
+        printf("pDma_0->Address[%d] [%#018" PRIx64 " ] \n",i,pDma_0->Address[i]);
     }
     printf("\n");
 
-    dma_engine *pDma_0 = &Dma_0;
+    data_engine Data_0;
+    Dma_0.Address = &Data_0.data;
 
+    printf("Again Dma_0\n"); 
+    printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n"); 
     for(int i = 0;i <ADDRESS_SPACE;i++)
     {
-        printf("pDma_0->Address[%d] [0x%x] \n",i,pDma_0->Address[i]);
+        printf("Dma_0.Address[%d] [%#018" PRIx64 " ] \n",i,Dma_0.Address[i]);
     }
+    printf("\n");
 
+    printf("Again pDma_0\n"); 
+    printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n"); 
+    for(int i = 0;i <ADDRESS_SPACE;i++)
+    {
+        printf("pDma_0->Address[%d] [%#018" PRIx64 " ] \n",i,pDma_0->Address[i]);
+    }
     printf("\n");
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
