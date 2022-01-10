@@ -10,7 +10,7 @@ using namespace std;
 
 struct dma_engine
 {
-    int (*Address)[ADDRESS_SPACE] = {nullptr};
+    int (*address)[ADDRESS_SPACE] = {nullptr};
 };
 
 struct data_engine
@@ -26,25 +26,25 @@ int main(int argc, char* argv[]) {
     //
     // Null pointer structure incremented every ---> 20h
     //
-    dma_engine Dma_0;
-    dma_engine *pDma_0 = &Dma_0;
+    dma_engine dma_0;
+    dma_engine *pdma_0 = &dma_0;
 
-    printf("pDma_0\n"); 
+    printf("pdma_0\n"); 
     printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n"); 
     for(int i = 0;i <ADDRESS_SPACE;i++)
     {
-        printf("pDma_0->Address[%d] [%#018" PRIx64 " ] \n",i,pDma_0->Address[i]);
+        printf("pdma_0->address[%d] [%#018" PRIx64 " ] \n",i,pdma_0->address[i]);
     }
     printf("\n");
 
-    data_engine Data_0;
-    Dma_0.Address = &Data_0.data;
+    data_engine data_0;
+    dma_0.address = &data_0.data;
 
-    printf("Again pDma_0\n"); 
+    printf("Again pdma_0\n"); 
     printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n"); 
     for(int i = 0;i <ADDRESS_SPACE;i++)
     {
-        printf("pDma_0->Address[%d] [%#018" PRIx64 " ] \n",i,pDma_0->Address[i]);
+        printf("pdma_0->address[%d] [%#018" PRIx64 " ] \n",i,pdma_0->address[i]);
     }
     printf("\n");
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////
