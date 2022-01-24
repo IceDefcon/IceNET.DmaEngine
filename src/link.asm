@@ -6,14 +6,14 @@ _EFLAGS:
 
 global Return_4x_16bit_arguments
 Return_4x_16bit_arguments:
-	mov rax, rdi
-	shl rax, $10
-	add rax, rsi
-	shl rax, $10
-	add rax, rdx
-	shl rax, $10
-	add rax, rcx
-	ret
+	mov rax, rdi 		; 4th input argument into RAX
+	shl rax, $10 		; Shift RAX 16bits Left
+	add rax, rsi 		; 3rh input argument into RAX
+	shl rax, $10 		; Shift RAX 16bit Left
+	add rax, rdx 		; 2nd argument into RAX
+	shl rax, $10 		; Shift RAX 16bit Left
+	add rax, rcx 		; 1st argument into RAX
+	ret 			; Return all input arguments into 64bit variable ----> 4x16bit = 64bit variable
 	
 global _RAX
 _RAX:
