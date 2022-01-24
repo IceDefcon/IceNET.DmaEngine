@@ -6,10 +6,10 @@ The target model is a parallelepiped volume enclosed in dimentional spheres
 
 It is still under developmen
 
-# To Compile
+To compile:
 
-make link
+	1. Compile assemblies: 		make link
 
-make
+	2. Compile the dma engine: 	make
 
 # ICE
