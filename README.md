@@ -6,4 +6,8 @@ The target model is a parallelepiped volume enclosed in dimentional spheres
 
 It is still under developmen
 
+To compile:
+
+make
+
 # ICE
