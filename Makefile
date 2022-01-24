@@ -1,19 +1,25 @@
 
-TARGET=app
+TARGET=dma
 CC=g++
-ASM=nasm -f elf64
+ASM=nasm 
+AFLAGS=-f elf64
 CFLAGS= -m64
-ASM_OBJECTS= link.o
+ASM_OBJECTS=src/link.o
 
 SRCS=\
     src/main.cpp \
 
+SRCS_ASM=\
+	src/link.asm \
+
 INCLUDES=\
     -Iinclude \
 
-all:  link.asm
-	$(ASM) link.asm	
+all:
 	$(CC) $(INCLUDES) $(SRCS) $(CFLAGS) $(ASM_OBJECTS) -o $(TARGET)
 
+link:
+	$(ASM) $(AFLAGS) $(SRCS_ASM)
+
 clean:
-	rm app link.o
+	rm $(TARGET) $(ASM_OBJECTS)
