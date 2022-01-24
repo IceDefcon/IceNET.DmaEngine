@@ -9,7 +9,6 @@ It is still under developmen
 To compile:
 
 	1. Compile assemblies: 		make link
-
 	2. Compile the dma engine: 	make
 
 # ICE
