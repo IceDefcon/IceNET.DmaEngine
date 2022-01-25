@@ -16,12 +16,12 @@ SRCS_ASM=\
 INCLUDES=\
     -Iinclude \
 
-all: link.o Main
+all: Link Main
 
 Main:
 	$(CC) $(SRCS) $(CFLAGS) $(INCLUDES) $(ASM_OBJECTS) -o $(TARGET)
 
-link.o: src/link.asm
+Link:
 	$(ASM) $(AFLAGS) $(SRCS_ASM)
 
 clean:
