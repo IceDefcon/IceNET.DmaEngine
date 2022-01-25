@@ -1,4 +1,5 @@
 #include <inttypes.h>
+#include <stdio.h>
 
 extern "C" unsigned long _RAX(void);
 extern "C" unsigned long _RBX(void);

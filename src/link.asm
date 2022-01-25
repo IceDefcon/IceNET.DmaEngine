@@ -14,7 +14,7 @@ Return_4x_16bit_arguments:
 	shl rax, $10
 	add rax, rcx
 	ret
-	
+
 global _RAX
 _RAX:
 	ret
