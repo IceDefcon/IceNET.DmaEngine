@@ -4,14 +4,14 @@ CC=g++
 ASM=nasm 
 AFLAGS=-f elf64
 CFLAGS= -m64 -lpthread
-ASM_OBJECTS=src/link.o
+ASM_OBJECTS=src/Link.o
 
 SRCS=\
-    src/main.cpp \
+    src/Main.cpp \
     src/Dma.cpp
 
 SRCS_ASM=\
-	src/link.asm \
+	src/Link.asm \
 
 INCLUDES=\
     -Iinclude \
