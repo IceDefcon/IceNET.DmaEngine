@@ -4,24 +4,25 @@ CC=g++
 ASM=nasm 
 AFLAGS=-f elf64
 CFLAGS= -m64 -lpthread
-ASM_OBJECTS=src/Link.o
+ASM_OBJECTS=src/link.o
 
 SRCS=\
-    src/Main.cpp \
-    src/Dma.cpp
+    src/main.cpp \
+    src/dma.cpp \
+    src/timer.cpp
 
 SRCS_ASM=\
-	src/Link.asm \
+	src/link.asm \
 
 INCLUDES=\
     -Iinclude \
 
-all: Link Main
+all: link main
 
-Main:
+main:
 	$(CC) $(SRCS) $(CFLAGS) $(INCLUDES) $(ASM_OBJECTS) -o $(TARGET)
 
-Link:
+link:
 	$(ASM) $(AFLAGS) $(SRCS_ASM)
 
 clean:

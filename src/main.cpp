@@ -1,5 +1,5 @@
 #include <iostream>
-#include "Dma.h"
+#include "dma.h"
 
 using namespace std;
 
@@ -9,7 +9,7 @@ int main(int argc, char* argv[]) {
 
     Init_Dma_Thread();
 
-    // Dma_dump();
+    Dma_dump();
 
     while(true)
     {

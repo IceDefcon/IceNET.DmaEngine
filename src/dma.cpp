@@ -1,8 +1,8 @@
 #include <pthread.h>
 #include <iostream>
-#include <unistd.h>
-#include "Dump.h"
-#include "Dma.h"
+#include "dump.h"
+#include "dma.h"
+#include "timer.h"
 
 extern "C" unsigned long Return_4x_16bit_arguments(int arg_1, int arg_2, int arg_3, int arg_4);
 
@@ -14,8 +14,8 @@ void* DmaThread(void* args)
     {
     	system("clear");
         Register_Dump();
-        printf("\ni = %x\n",i++);        
-        sleep(1);
+        printf("\ni = %x\n",i++);
+        delay(250);
     }
 }
 
