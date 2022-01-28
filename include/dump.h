@@ -19,6 +19,8 @@ extern "C" int _RGS(void);
 
 extern "C" int _EFLAGS(void);
 
+extern "C" int _RETURN_ADDRESS(void);
+
 void Register_Dump(void) { 
 
     printf("\nGeneral-Purpose Registers:\n"); 

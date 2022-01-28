@@ -40,36 +40,13 @@ int Init_Dma_Thread(void)
 
 void Dma_dump(void)
 {
-	//
-    // Null pointer structure incremented every ---> 20h
-    //
-    dma_engine dma_0;
-    dma_engine *pdma_0 = &dma_0;
-
-    printf("pdma_0\n"); 
-    printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n"); 
-    for(int i = 0;i <ADDRESS_SPACE;i++)
-    {
-        printf("pdma_0->address[%d] [%#018" PRIx64 " ] \n",i,pdma_0->address[i]);
-    }
-    printf("\n");
-
-    data_engine data_0;
-    dma_0.address = &data_0.data;
-
-    printf("Again pdma_0\n"); 
-    printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n"); 
-    for(int i = 0;i <ADDRESS_SPACE;i++)
-    {
-        printf("pdma_0->address[%d] [%#018" PRIx64 " ] \n",i,pdma_0->address[i]);
-    }
-    printf("\n");
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     Return_4x_16bit_arguments(2,4,6,8);
     Register_Dump();
     long long argumetns = Return_4x_16bit_arguments(2,4,6,8);
 
+    printf("\nReturn Arguments Test\n");
+    printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n"); 
     printf("argumetns = %llx \n",argumetns);
 
     int argumetn_1 = (0xffff000000000000 & argumetns) >> 0x30;
