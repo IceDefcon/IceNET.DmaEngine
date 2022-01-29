@@ -6,16 +6,20 @@
 
 extern "C" unsigned long Return_4x_16bit_arguments(int arg_1, int arg_2, int arg_3, int arg_4);
 
-// Dma Thread Definition
+//
+// The DMA Thread Function  
+//
 void* DmaThread(void* args)
 {
 	int i = 0;
+    ioperm(0x60,0x1,1);
     while(true)
     {
     	system("clear");
         Register_Dump();
         printf("\ni = %x\n",i++);
-        delay(250);
+        delay(10);
+        
     }
 }
 

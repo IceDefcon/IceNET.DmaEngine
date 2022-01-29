@@ -1,5 +1,6 @@
 #include <inttypes.h>
 #include <stdio.h>
+#include <sys/io.h>
 
 extern "C" unsigned long _RAX(void);
 extern "C" unsigned long _RBX(void);
@@ -19,7 +20,7 @@ extern "C" int _RGS(void);
 
 extern "C" int _EFLAGS(void);
 
-extern "C" int _RETURN_ADDRESS(void);
+extern "C" int _KEY(void);
 
 void Register_Dump(void) { 
 
@@ -46,4 +47,9 @@ void Register_Dump(void) {
     printf("\nEFLAGS Register:\n"); 
     printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n"); 
     printf("32-Bit Flag Register    : 0x%08x\n",_EFLAGS());
+
+    printf("\nIO Port 0x60:\n"); 
+    printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n"); 
+    printf("\nLast Key Pressed      :  0x%02hhx \n",inb(0x60));
+
 }

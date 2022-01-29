@@ -1,32 +1,24 @@
-section .data
-string			DB	'y'
-word_number		DW	0x1234
-dword_number	DD	0x12345678
-qword_number	DQ	0x1234567812345678
-section .text
 
-global _RETURN_ADDRESS
-_RETURN_ADDRESS:
-	mov rdi, word_number
-	mov rax, rdi
-	ret
+
+
+
 
 global _EFLAGS
 _EFLAGS:
-	pushf  			; push eflags into stack
+	pushf  				; push eflags into stack
 	pop rax 			; pop it into rax
 	ret
 
 global Return_4x_16bit_arguments
 Return_4x_16bit_arguments:
-	mov rax, rdi 		; 4th input argument into RAX
+	mov rax, rdi 		; 4th input argument RDI ---> RAX
 	shl rax, $10 		; Shift RAX 16bits Left
-	add rax, rsi 		; 3rh input argument into RAX
+	add rax, rsi 		; 3rh input argument RSI ---> RAX
 	shl rax, $10 		; Shift RAX 16bit Left
-	add rax, rdx 		; 2nd argument into RAX
+	add rax, rdx 		; 2nd input argument RDX ---> RAX
 	shl rax, $10 		; Shift RAX 16bit Left
-	add rax, rcx 		; 1st argument into RAX
-	ret 					; Return all input arguments into 64bit variable ----> 4x16bit = 64bit variable
+	add rax, rcx 		; 1st input argument RCX ---> RAX
+	ret 				; Return all input arguments into 64bit variable ----> 4x16bit = 64bit variable
 	
 global _RAX
 _RAX:
