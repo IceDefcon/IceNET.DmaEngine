@@ -17,6 +17,7 @@ void* DmaThread(void* args)
     while(true)
     {
         system("clear");
+        // Register_Dump(); ---> Debug 
         curr = (char)Key_Dump();
         if(curr != prev) 
         {

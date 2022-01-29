@@ -8,4 +8,12 @@ It is still under development
 
 	1. Compile Engine ---> make
 
+
+Input arguments to the C/C++ function are in 64bit general purpose registers:
+
+	1st ---> RCX
+	2nd ---> RDX
+	3rh ---> RSI
+	4th ---> RDI
+
 # ICE

@@ -22,6 +22,8 @@ extern "C" int _EFLAGS(void);
 
 extern "C" int _KEY(void);
 
+extern "C" void *memset(void *dst, int c, size_t len);
+
 void Register_Dump(void) { 
 
     printf("\nGeneral-Purpose Registers:\n"); 
