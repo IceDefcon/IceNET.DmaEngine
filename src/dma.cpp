@@ -12,14 +12,20 @@ extern "C" unsigned long Return_4x_16bit_arguments(int arg_1, int arg_2, int arg
 void* DmaThread(void* args)
 {
 	int i = 0;
+    char prev, curr, next;
     ioperm(0x60,0x1,1);
     while(true)
     {
-    	system("clear");
-        Register_Dump();
-        printf("\ni = %x\n",i++);
-        delay(10);
-        
+        system("clear");
+        curr = (char)Key_Dump();
+        if(curr != prev) 
+        {
+            i++;
+        }
+        printf("\n  Toggle No:   %x \n",i);
+        printf("\n  Last Key:    %hhx\n",curr);
+        delay(50);
+        prev = curr;
     }
 }
 

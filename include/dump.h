@@ -48,8 +48,9 @@ void Register_Dump(void) {
     printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n"); 
     printf("32-Bit Flag Register    : 0x%08x\n",_EFLAGS());
 
-    printf("\nIO Port 0x60:\n"); 
-    printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n"); 
-    printf("\nLast Key Pressed      :  0x%02hhx \n",inb(0x60));
+}
 
+int Key_Dump(void)
+{
+    return inb(0x60);
 }
