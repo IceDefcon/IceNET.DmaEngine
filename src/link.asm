@@ -1,20 +1,4 @@
 
-global mamset
-memset:
-	push rdi
-	mov rdi, rax
-	mov rax, rdi
-	imul rax, 0x01010101
-	push rcx
-	shr rcx, 0x2
-	rep
-	pop rcx
-	and rcx, 0x3
-	rep
-	pop rdi
-	ret
-
-
 
 global _EFLAGS
 _EFLAGS:
