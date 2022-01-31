@@ -1,13 +1,11 @@
-#include <iostream>
+#include <iostream>     // system("clear")
 #include "dma.h"
-
-using namespace std;
 
 int main(int argc, char* argv[]) {
 
     system("clear");
 
-    Init_Dma_Thread();
+    DmaInit();
 
     while(true)
     {

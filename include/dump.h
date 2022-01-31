@@ -1,5 +1,4 @@
 #include <inttypes.h>
-#include <stdio.h>
 #include <sys/io.h>
 
 extern "C" unsigned long _RAX(void);

@@ -1,49 +1,71 @@
-#include <pthread.h>
-#include <iostream>
+#include <iostream>     // system("clear")
+#include <cstring>      // memcpy
 #include "dump.h"
-#include "dma.h"
 #include "timer.h"
 
 extern "C" unsigned long Return_4x_16bit_arguments(int arg_1, int arg_2, int arg_3, int arg_4);
 
-extern int i = 0;
+#define BUFFER_SIZE 1024
+int i = 0;
+char prev, curr;
+
+bool ready;
+char source[BUFFER_SIZE];
+char dest[BUFFER_SIZE];
 
 void* DmaKeyThread(void* args)
 {
-    char prev, curr, next;
+
     ioperm(0x60,0x1,1);
+    memset(source, 0, sizeof(source));
+    memset(dest, 0, sizeof(dest));
     while(true)
     {
         system("clear");
-        // Register_Dump(); ---> Debug 
         curr = (char)Key_Dump();
         if(curr != prev) 
         {
+            source[i] = curr;
             i++;
+        }
+        if(i == BUFFER_SIZE-1)
+        {
+            // TO DO !!!!!
+            // Signal Semaphore
+            // Need signal semaphore here 
+            // To handle buffers
+            //
+            memcpy(dest, source, sizeof dest);
+            memset(source, 0, sizeof(source));
+            ready = true;
+            i = 0;
         }
         printf("\n  Toggle No:   %x \n",i);
         printf("\n  Last Key:    %hhx\n",curr);
-        delay(50);
+        delay(100);
         prev = curr;
     }
 }
 
 void* DmaSwitchThread(void* args)
 {
+    while(true)
+    {
 
+    }
 }
 
-int Init_Dma_Thread(void)
+int DmaInit(void)
 {
-	// Thread Dma_Key
+	// Thread Id
     pthread_t Dma_Key;
     pthread_t Dma_Switch;
     
     // Creating Thread
-    // int result = pthread_create(&Dma_Key,NULL,&DmaKeyThread,NULL);
     pthread_create(&Dma_Key,NULL,&DmaKeyThread,NULL);
     pthread_create(&Dma_Switch,NULL,&DmaSwitchThread,NULL);
     // To DO
+    // Thread Protection !!!!
     // if(result == 0)
     // {
     //     printf("Thread created successfully.\n");
@@ -53,9 +75,10 @@ int Init_Dma_Thread(void)
     //     printf("Thread not created.\n");
     //     return 0; /*return from main*/
     // }
+    return 0;
 }
 
-void Dma_dump(void)
+void DmaDump(void)
 {
 
     Return_4x_16bit_arguments(2,4,6,8);
