@@ -1,14 +1,14 @@
-#include <iostream>     // system("clear")
+#include <iostream>     // system
 #include <cstring>      // memcpy
 #include "dump.h"
 #include "timer.h"
 
-#define BUFFER_SIZE 1024
+#define BUFFER_SIZE 8
 
 int i = 0;
 char prev, curr;
 
-bool ready;
+bool ready = false;
 char source[BUFFER_SIZE];
 char dest[BUFFER_SIZE];
 
@@ -27,7 +27,7 @@ void* DmaKeyThread(void* args)
             source[i] = curr;
             i++;
         }
-        if(i == BUFFER_SIZE-1)
+        if(i == BUFFER_SIZE)
         {
             // TO DO !!!!!
             // Signal Semaphore
@@ -50,7 +50,11 @@ void* DmaSwitchThread(void* args)
 {
     while(true)
     {
-
+        if(ready == true) 
+        {
+            printf("I am DMA Switch\n");
+            ready = false;
+        }
     }
 }
 
