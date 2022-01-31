@@ -4,12 +4,11 @@
 #include "dump.h"
 #include "timer.h"
 
-#define BUFFER_SIZE 8
+#define BUFFER_SIZE 16
 
 int i = 0;
 char prev, curr;
 
-bool ready = false;
 char source[BUFFER_SIZE];
 char dest[BUFFER_SIZE];
 
@@ -32,18 +31,14 @@ void* DmaKeyThread(void* args)
         }
         if(i == BUFFER_SIZE)
         {
-            // TO DO !!!!!
-            // Signal Semaphore
-            // Need signal semaphore here 
-            // To handle buffers
-            //
             memcpy(dest, source, sizeof dest);
             memset(source, 0, sizeof(source));
-            ready = true;
             i = 0;
+            sem_post(&mutex); // Initial value is Zero so we post it after the buffers are coppied
         }
-        printf("\n  Toggle No:   %x \n",i);
-        printf("\n  Last Key:    %hhx\n",curr);
+        printf("\n  Toggle No       : %x \n",i);
+        printf("\n  Last Key        : %hhx\n",curr);
+
         delay(100);
         prev = curr;
     }
@@ -53,36 +48,27 @@ void* DmaSwitchThread(void* args)
 {
     while(true)
     {
-        if(ready == true) 
-        {
-            printf("I am DMA Switch\n");
-            ready = false;
-        }
+        sem_wait(&mutex);
+        printf("ready is true ---> So I execute 0\n");
+        printf("ready is true ---> So I execute 1\n");
+        printf("ready is true ---> So I execute 2\n");
+        printf("ready is true ---> So I execute 3\n");        
     }
 }
 
 int DmaInit(void)
 {
-    sem_init(&mutex, 0, 1); 
-    
+    sem_init(&mutex, 0, 0);  // 0 --> 1 processor, 1 --> inital semaphore value) 
+
 	// Thread Id
     pthread_t Dma_Key;
     pthread_t Dma_Switch;
     
     // Creating Thread
-    pthread_create(&Dma_Key,NULL,&DmaKeyThread,NULL);
-    pthread_create(&Dma_Switch,NULL,&DmaSwitchThread,NULL);
-    // To DO
-    // Thread Protection !!!!
-    // if(result == 0)
-    // {
-    //     printf("Thread created successfully.\n");
-    // }
-    // else
-    // {
-    //     printf("Thread not created.\n");
-    //     return 0; /*return from main*/
-    // }
+    if(pthread_create(&Dma_Key,NULL,&DmaKeyThread,NULL) != 0) printf("Failed to create thread");
+    if(pthread_create(&Dma_Switch,NULL,&DmaSwitchThread,NULL) != 0) printf("Failed to create switch thread");
+
+    sem_destroy(&mutex);
     return 0;
 }
 
