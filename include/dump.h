@@ -21,7 +21,7 @@ extern "C" int _EFLAGS(void);
 
 extern "C" int _KEY(void);
 
-extern "C" void *memset(void *dst, int c, size_t len);
+extern "C" unsigned long Return_4x_16bit_arguments(int arg_1, int arg_2, int arg_3, int arg_4);
 
 void Register_Dump(void) { 
 

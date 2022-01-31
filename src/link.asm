@@ -1,5 +1,10 @@
+section .data
+	data_1 db 0xFF
+	data_2 dw 0xFFFF
+	data_3 dd 0xFFFFFFFF
+	data_4 dq 0xFFFFFFFFFFFFFFFF
 
-
+section .text
 global _EFLAGS
 _EFLAGS:
 	pushf  				; push eflags into stack

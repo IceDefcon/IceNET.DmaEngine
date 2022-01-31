@@ -1,6 +1,4 @@
-#include <ctime>   // add this
-
-
+#include <ctime> 
 
 void delay(int milliseconds)
 {

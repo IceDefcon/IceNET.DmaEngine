@@ -3,9 +3,8 @@
 #include "dump.h"
 #include "timer.h"
 
-extern "C" unsigned long Return_4x_16bit_arguments(int arg_1, int arg_2, int arg_3, int arg_4);
-
 #define BUFFER_SIZE 1024
+
 int i = 0;
 char prev, curr;
 
