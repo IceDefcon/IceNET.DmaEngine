@@ -6,7 +6,7 @@ The target model is a parallelepiped volume enclosed in dimentional spheres
 
 It is still under development
 
-	1. Compile Engine ---> make
+	Compile Engine ---> make
 
 
 Input arguments to the C/C++ function are in 64bit general purpose registers:
