@@ -1,5 +1,6 @@
 #include <iostream>     // system
 #include <cstring>      // memcpy
+#include <semaphore.h>
 #include "dump.h"
 #include "timer.h"
 
@@ -11,6 +12,8 @@ char prev, curr;
 bool ready = false;
 char source[BUFFER_SIZE];
 char dest[BUFFER_SIZE];
+
+sem_t mutex; 
 
 void* DmaKeyThread(void* args)
 {
@@ -60,6 +63,8 @@ void* DmaSwitchThread(void* args)
 
 int DmaInit(void)
 {
+    sem_init(&mutex, 0, 1); 
+    
 	// Thread Id
     pthread_t Dma_Key;
     pthread_t Dma_Switch;
