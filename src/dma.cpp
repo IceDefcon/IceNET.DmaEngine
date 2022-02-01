@@ -61,12 +61,12 @@ int DmaInit(void)
     sem_init(&mutex, 0, 0);  // 0 --> only 1 processor, 0 --> inital value = 0 so it must be posted to be able to wait 
 
 	// Thread Id
-    pthread_t Dma_Key;
-    pthread_t Dma_Switch;
+    pthread_t DmaKey;
+    pthread_t DmaSwitch;
     
     // Creating Thread
-    if(pthread_create(&Dma_Key,NULL,&DmaKeyThread,NULL) != 0) perror("Failed to create thread");
-    if(pthread_create(&Dma_Switch,NULL,&DmaSwitchThread,NULL) != 0) perror("Failed to create switch thread");
+    if(pthread_create(&DmaKey,NULL,&DmaKeyThread,NULL) != 0) perror("Failed to create thread");
+    if(pthread_create(&DmaSwitch,NULL,&DmaSwitchThread,NULL) != 0) perror("Failed to create switch thread");
 
     sem_destroy(&mutex);
     return 0;
