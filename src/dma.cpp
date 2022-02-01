@@ -9,8 +9,15 @@
 int i = 0;
 char prev, curr;
 
-char source[BUFFER_SIZE];
-char dest[BUFFER_SIZE];
+#ifndef __cplusplus
+# include <stdatomic.h>
+#else
+# include <atomic>
+# define _Atomic(X) std::atomic< X >
+#endif
+
+_Atomic(char) source[BUFFER_SIZE];
+_Atomic(char) dest[BUFFER_SIZE];
 
 sem_t mutex; 
 
