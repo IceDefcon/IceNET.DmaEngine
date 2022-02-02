@@ -2,12 +2,13 @@
 #include <cstring>      // memcpy
 #include <semaphore.h>
 #include "dump.h"
-#include "timer.h"
 
-#define BUFFER_SIZE 16
+#define BUFFER_SIZE 128
 
 int i = 0;
 char prev, curr;
+int shutdown = 0;
+
 
 #ifndef __cplusplus
 # include <stdatomic.h>
@@ -31,36 +32,51 @@ void* DmaKeyThread(void* args)
     {
         system("clear");
         curr = (char)Key_Dump();
+        if(curr == 0x58) break;
         if(curr != prev) 
         {
             source[i] = curr;
             i++;
         }
-        if(i == BUFFER_SIZE)
+        if(i == BUFFER_SIZE - 2)
         {
             memcpy(dest, source, sizeof dest);
             memset(source, 0, sizeof(source));
-            i = 0;
             sem_post(&mutex); // Initial value is Zero so we post it after the buffers are coppied
+            i = 0;
         }
         printf("\n  Toggle No       : %x \n",i);
         printf("\n  Last Key        : %hhx\n",curr);
-
-        delay(100);
         prev = curr;
     }
+    ioperm(0x60,0x1,0);
+    shutdown = 1;
+    return 0;
 }
+
+#include <fstream>
+
+using namespace std;
 
 void* DmaSwitchThread(void* args)
 {
     while(true)
     {
         sem_wait(&mutex);
-        printf("ready is true ---> So I execute 0\n");
-        printf("ready is true ---> So I execute 1\n");
-        printf("ready is true ---> So I execute 2\n");
-        printf("ready is true ---> So I execute 3\n");        
+
+        ofstream stream;
+        stream.open("ice.net");
+
+        if( !stream ) cout << "Opening file failed" << endl;
+        for(int i = 0;i < sizeof(dest);i++)
+        {
+            stream << *(dest + i);
+        }
+
+        if( !stream ) cout << "Write failed" << endl;
+        if(shutdown == 1) break;
     }
+    return 0;
 }
 
 int DmaInit(void)

@@ -1,10 +1,11 @@
 
-TARGET=dma
-CC=g++
-ASM=nasm 
-AFLAGS=-f elf64
-CFLAGS= -m64 -lpthread -lrt 
-ASM_OBJECTS=src/link.o
+TARGET 		= dma
+CC  		= g++
+ASM 		= nasm 
+AFLAGS 		= -f elf64
+CFLAGS 		= -m64 -lpthread -lrt 
+ASM_OBJECTS	= src/link.o
+FILE 		= ice.net
 
 SRCS=\
     src/main.cpp \
@@ -26,4 +27,4 @@ link:
 	$(ASM) $(AFLAGS) $(SRCS_ASM)
 
 clean:
-	rm $(TARGET) $(ASM_OBJECTS)
+	sudo rm $(TARGET) $(ASM_OBJECTS) $(FILE)

@@ -3,6 +3,8 @@
 
 #define ADDRESS_SPACE 8
 
+extern int shutdown;
+
 struct dma_engine
 {
     int (*address)[ADDRESS_SPACE] = {nullptr};
