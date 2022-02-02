@@ -10,9 +10,9 @@ int main(int argc, char* argv[]) {
 
     while(true)
     {
-        // This is main loop
-        if(shutdown == 1) break;
+        // This is the main loop
+        if(shutdown) break;
     }
-    sleep(1);
+    sleep(1); // 1s delay ---> for the treads to temrinate
     return 0;
 }

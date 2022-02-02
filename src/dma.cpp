@@ -7,7 +7,7 @@
 
 int i = 0;
 char prev, curr;
-int shutdown = 0;
+bool shutdown = false;
 
 
 #ifndef __cplusplus
@@ -45,12 +45,10 @@ void* DmaKeyThread(void* args)
             sem_post(&mutex); // Initial value is Zero so we post it after the buffers are coppied
             i = 0;
         }
-        printf("\n  Toggle No       : %x \n",i);
-        printf("\n  Last Key        : %hhx\n",curr);
         prev = curr;
     }
     ioperm(0x60,0x1,0);
-    shutdown = 1;
+    shutdown = true;
     return 0;
 }
 
@@ -74,7 +72,7 @@ void* DmaSwitchThread(void* args)
         }
 
         if( !stream ) cout << "Write failed" << endl;
-        if(shutdown == 1) break;
+        if(shutdown) break;
     }
     return 0;
 }
