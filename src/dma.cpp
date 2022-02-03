@@ -2,6 +2,7 @@
 #include <cstring>      // memcpy
 #include <semaphore.h>
 #include "dump.h"
+#include "timer.h"
 
 #define BUFFER_SIZE 128
 
@@ -27,26 +28,42 @@ void* DmaSwitchThread(void* args)
     memset(source, 0, sizeof(source));
     memset(dest, 0, sizeof(dest));
     while(true)
-    {
+    {   
+        sem_wait(&mutex);
         //
         // Do the work and eventually post the semaphore !!!
         //
-        system("clear");
-        sem_post(&mutex); // Initial value is Zero so we post it after the buffers are coppied
+        printf("Switch Thread ---> i[%x]\n",i);
         if(shutdown) break;
+        sem_post(&mutex);   // First post 
+        delay(100);         // For the Work Thread to Initialize
     }
     return 0;
 }
 
 void* DmaWorkThread(void* args)
 {
+    delay(1000); // Delay 1s ---> So Switch Thread is 1st 
     while(true)
     {
         sem_wait(&mutex);
+        printf("Work Thread   ---> i[%x]\n",i);
+        i++;
         //
         // Do the work ---> if semaphore was posted !!!
         //
-        
+        sem_post(&mutex);   // For the Switch thread
+        delay(200);         // For the Switch thread 
+    }
+    return 0;
+}
+
+void* DmaShutdownThread(void* args)
+{
+    while(true)
+    {
+        delay(5000); // Lengt befor Thread will shotd down !!!
+        shutdown = true;
     }
     return 0;
 }
@@ -58,10 +75,12 @@ int DmaInit(void)
 	// Thread Id
     pthread_t DmaSwitch;
     pthread_t DmaWork;
+    pthread_t DmaShutdown;
     
     // Creating Thread
-    if(pthread_create(&DmaSwitch,NULL,&DmaSwitchThread,NULL) != 0) perror("Failed to create thread");
-    if(pthread_create(&DmaWork,NULL,&DmaWorkThread,NULL) != 0) perror("Failed to create switch thread");
+    if(pthread_create(&DmaSwitch,NULL,&DmaSwitchThread,NULL) != 0) perror("Failed to create Switch thread");
+    if(pthread_create(&DmaWork,NULL,&DmaWorkThread,NULL) != 0) perror("Failed to create Work thread");
+    if(pthread_create(&DmaShutdown,NULL,&DmaShutdownThread,NULL) != 0) perror("Failed to create Shutdown thread");
 
     sem_destroy(&mutex);
     return 0;

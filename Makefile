@@ -9,6 +9,7 @@ ASM_OBJECTS	= src/link.o
 SRCS=\
     src/main.cpp \
     src/dma.cpp \
+    src/timer.cpp \
 
 SRCS_ASM=\
 	src/link.asm \
