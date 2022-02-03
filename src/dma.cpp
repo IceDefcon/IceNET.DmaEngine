@@ -22,33 +22,18 @@ _Atomic(char) dest[BUFFER_SIZE];
 
 sem_t mutex; 
 
-void* DmaKeyThread(void* args)
+void* DmaSwitchThread(void* args)
 {
-
-    ioperm(0x60,0x1,1);
     memset(source, 0, sizeof(source));
     memset(dest, 0, sizeof(dest));
     while(true)
     {
-        system("clear");
-        curr = (char)Key_Dump();
-        if(curr == 0x58) break;
-        if(curr != prev) 
-        {
-            source[i] = curr;
-            i++;
-        }
-        if(i == BUFFER_SIZE - 2)
-        {
-            memcpy(dest, source, sizeof dest);
-            memset(source, 0, sizeof(source));
-            sem_post(&mutex); // Initial value is Zero so we post it after the buffers are coppied
-            i = 0;
-        }
-        prev = curr;
+        //
+        // Do the work and eventually post the semaphore !!!
+        //
+        sem_post(&mutex); // Initial value is Zero so we post it after the buffers are coppied
+        if(shutdown) break;
     }
-    ioperm(0x60,0x1,0);
-    shutdown = true;
     return 0;
 }
 
@@ -56,23 +41,15 @@ void* DmaKeyThread(void* args)
 
 using namespace std;
 
-void* DmaSwitchThread(void* args)
+void* DmaWorkThread(void* args)
 {
     while(true)
     {
         sem_wait(&mutex);
-
-        ofstream stream;
-        stream.open("ice.net");
-
-        if( !stream ) cout << "Opening file failed" << endl;
-        for(int i = 0;i < sizeof(dest);i++)
-        {
-            stream << *(dest + i);
-        }
-
-        if( !stream ) cout << "Write failed" << endl;
-        if(shutdown) break;
+        //
+        // Do the work ---> if semaphore was posted !!!
+        //
+        
     }
     return 0;
 }
@@ -82,12 +59,12 @@ int DmaInit(void)
     sem_init(&mutex, 0, 0);  // 0 --> only 1 processor, 0 --> inital value = 0 so it must be posted to be able to wait 
 
 	// Thread Id
-    pthread_t DmaKey;
     pthread_t DmaSwitch;
+    pthread_t DmaWork;
     
     // Creating Thread
-    if(pthread_create(&DmaKey,NULL,&DmaKeyThread,NULL) != 0) perror("Failed to create thread");
-    if(pthread_create(&DmaSwitch,NULL,&DmaSwitchThread,NULL) != 0) perror("Failed to create switch thread");
+    if(pthread_create(&DmaSwitch,NULL,&DmaSwitchThread,NULL) != 0) perror("Failed to create thread");
+    if(pthread_create(&DmaWork,NULL,&DmaWorkThread,NULL) != 0) perror("Failed to create switch thread");
 
     sem_destroy(&mutex);
     return 0;

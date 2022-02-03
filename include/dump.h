@@ -1,5 +1,4 @@
 #include <inttypes.h>
-#include <sys/io.h>
 
 extern "C" unsigned long _RAX(void);
 extern "C" unsigned long _RBX(void);
@@ -51,7 +50,3 @@ void Register_Dump(void) {
 
 }
 
-int Key_Dump(void)
-{
-    return inb(0x60);
-}
