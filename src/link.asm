@@ -1,8 +1,3 @@
-section .data
-	data_1 db 0xFF
-	data_2 dw 0xFFFF
-	data_3 dd 0xFFFFFFFF
-	data_4 dq 0xFFFFFFFFFFFFFFFF
 
 section .text
 global _EFLAGS
@@ -11,17 +6,6 @@ _EFLAGS:
 	pop rax 			; pop it into rax
 	ret
 
-global Return_4x_16bit_arguments
-Return_4x_16bit_arguments:
-	mov rax, rdi 		; 4th input argument RDI ---> RAX
-	shl rax, $10 		; Shift RAX 16bits Left
-	add rax, rsi 		; 3rh input argument RSI ---> RAX
-	shl rax, $10 		; Shift RAX 16bit Left
-	add rax, rdx 		; 2nd input argument RDX ---> RAX
-	shl rax, $10 		; Shift RAX 16bit Left
-	add rax, rcx 		; 1st input argument RCX ---> RAX
-	ret 				; Return all input arguments into 64bit variable ----> 4x16bit = 64bit variable
-	
 global _RAX
 _RAX:
 	ret

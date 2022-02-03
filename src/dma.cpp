@@ -31,15 +31,12 @@ void* DmaSwitchThread(void* args)
         //
         // Do the work and eventually post the semaphore !!!
         //
+        system("clear");
         sem_post(&mutex); // Initial value is Zero so we post it after the buffers are coppied
         if(shutdown) break;
     }
     return 0;
 }
-
-#include <fstream>
-
-using namespace std;
 
 void* DmaWorkThread(void* args)
 {
@@ -70,25 +67,3 @@ int DmaInit(void)
     return 0;
 }
 
-void DmaDump(void)
-{
-
-    Return_4x_16bit_arguments(2,4,6,8);
-    Register_Dump();
-    long long argumetns = Return_4x_16bit_arguments(2,4,6,8);
-
-    printf("\nReturn Arguments Test\n");
-    printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n"); 
-    printf("argumetns = %llx \n",argumetns);
-
-    int argumetn_1 = (0xffff000000000000 & argumetns) >> 0x30;
-    int argumetn_2 = (0x0000ffff00000000 & argumetns) >> 0x20;
-    int argumetn_3 = (0x00000000ffff0000 & argumetns) >> 0x10;
-    int argumetn_4 = (0x000000000000ffff & argumetns) >> 0x00;
-
-    printf("argumetn_1 = %x \n",argumetn_1);
-    printf("argumetn_2 = %x \n",argumetn_2);
-    printf("argumetn_3 = %x \n",argumetn_3);
-    printf("argumetn_4 = %x \n",argumetn_4);
-
-}
