@@ -7,11 +7,6 @@ int main(int argc, char* argv[]) {
 
     DmaInit();
 
-    while(run)
-    {
-        // This is the main loop
-    }
-
     DmaTerminate();
 
     return 0;
