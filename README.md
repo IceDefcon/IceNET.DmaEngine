@@ -16,6 +16,5 @@ Input arguments to the C/C++ function are in 64bit general purpose registers:
 	3rh ---> RSI
 	4th ---> RDI
 
-Double count on a Key press is an international debounce standard
 
 # ICE
