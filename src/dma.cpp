@@ -32,7 +32,7 @@ void* DmaSwitchThread(void* args)
     {   
         sem_wait(&SemaphoreSwitch);
         //
-        // Do the work and eventually post the semaphore !!!
+        // Do the switch work and signal Working Thread
         //
         printf("Switch Thread ---> i[%x]\n",i);
         if(shutdown) break;
@@ -49,9 +49,9 @@ void* DmaWorkThread(void* args)
         printf("Work Thread   ---> i[%x]\n",i);
         i++;
         //
-        // Do the work ---> if semaphore was posted !!!
+        // Do the work
         //
-        sem_post(&SemaphoreSwitch);   // For the Switch thread
+        sem_post(&SemaphoreSwitch);
     }
     return 0;
 }
