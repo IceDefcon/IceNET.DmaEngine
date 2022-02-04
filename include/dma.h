@@ -1,5 +1,6 @@
 
 
-extern int shutdown;
+extern int run;
 
-int  DmaInit(void);
+void DmaInit(void);
+void DmaTerminate(void);
