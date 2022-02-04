@@ -21,7 +21,8 @@ bool shutdown = false;
 _Atomic(char) source[BUFFER_SIZE];
 _Atomic(char) dest[BUFFER_SIZE];
 
-sem_t mutex; 
+sem_t SemaphoreSwitch; 
+sem_t SemaphoreWork; 
 
 void* DmaSwitchThread(void* args)
 {
@@ -29,31 +30,28 @@ void* DmaSwitchThread(void* args)
     memset(dest, 0, sizeof(dest));
     while(true)
     {   
-        sem_wait(&mutex);
+        sem_wait(&SemaphoreSwitch);
         //
         // Do the work and eventually post the semaphore !!!
         //
         printf("Switch Thread ---> i[%x]\n",i);
         if(shutdown) break;
-        sem_post(&mutex);   // First post 
-        delay(100);         // For the Work Thread to Initialize
+        sem_post(&SemaphoreWork);   // First post 
     }
     return 0;
 }
 
 void* DmaWorkThread(void* args)
 {
-    delay(1000); // Delay 1s ---> So Switch Thread is 1st 
     while(true)
     {
-        sem_wait(&mutex);
+        sem_wait(&SemaphoreWork);
         printf("Work Thread   ---> i[%x]\n",i);
         i++;
         //
         // Do the work ---> if semaphore was posted !!!
         //
-        sem_post(&mutex);   // For the Switch thread
-        delay(200);         // For the Switch thread 
+        sem_post(&SemaphoreSwitch);   // For the Switch thread
     }
     return 0;
 }
@@ -62,7 +60,8 @@ void* DmaShutdownThread(void* args)
 {
     while(true)
     {
-        delay(5000); // Lengt befor Thread will shotd down !!!
+        delay(10); // Lengt befor Thread will shotd down !!!
+        //Register_Dump();
         shutdown = true;
     }
     return 0;
@@ -70,7 +69,8 @@ void* DmaShutdownThread(void* args)
 
 int DmaInit(void)
 {
-    sem_init(&mutex, 0, 0);  // 0 --> only 1 processor, 0 --> inital value = 0 so it must be posted to be able to wait 
+    sem_init(&SemaphoreSwitch, 0, 1);  // 0 --> only 1 processor, 0 --> inital value = 0 so it must be posted to be able to wait 
+    sem_init(&SemaphoreWork,  0, 0);
 
 	// Thread Id
     pthread_t DmaSwitch;
@@ -82,7 +82,8 @@ int DmaInit(void)
     if(pthread_create(&DmaWork,NULL,&DmaWorkThread,NULL) != 0) perror("Failed to create Work thread");
     if(pthread_create(&DmaShutdown,NULL,&DmaShutdownThread,NULL) != 0) perror("Failed to create Shutdown thread");
 
-    sem_destroy(&mutex);
+    sem_destroy(&SemaphoreSwitch);
+    sem_destroy(&SemaphoreWork);
     return 0;
 }
 

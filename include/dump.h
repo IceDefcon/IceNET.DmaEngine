@@ -18,6 +18,11 @@ extern "C" int _RGS(void);
 
 extern "C" int _EFLAGS(void);
 
+extern "C" unsigned long _CPU_RAX(void);
+extern "C" unsigned long _CPU_RBX(void);
+extern "C" unsigned long _CPU_RCX(void);
+extern "C" unsigned long _CPU_RDX(void);
+
 void Register_Dump(void) { 
 
     printf("\nGeneral-Purpose Registers:\n"); 
@@ -44,5 +49,11 @@ void Register_Dump(void) {
     printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n"); 
     printf("32-Bit Flag Register    : 0x%08x\n",_EFLAGS());
 
+    printf("\nCPU Register:\n"); 
+    printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n"); 
+    printf("CPU ID RAX              : %#018" PRIx64 " \n",_CPU_RAX());
+    printf("CPU ID RBX              : %#018" PRIx64 " \n",_CPU_RBX());
+    printf("CPU ID RCX              : %#018" PRIx64 " \n",_CPU_RCX());
+    printf("CPU ID RDX              : %#018" PRIx64 " \n",_CPU_RDX());
 }
 

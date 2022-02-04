@@ -1,5 +1,34 @@
 
 section .text
+
+
+global _CPU_RAX
+_CPU_RAX:
+ 	mov eax, 0h
+	cpuid ; get APIC ID from EBX[31:24]
+	ret
+
+global _CPU_RBX
+_CPU_RBX:
+ 	mov eax, 0h
+	cpuid ; get APIC ID from EBX[31:24]
+	mov rax, rbx
+	ret
+
+global _CPU_RCX
+_CPU_RCX:
+ 	mov eax, 0h
+	cpuid ; get APIC ID from EBX[31:24]
+	mov rax, rcx
+	ret
+
+global _CPU_RDX
+_CPU_RDX:
+ 	mov eax, 0h
+	cpuid ; get APIC ID from EBX[31:24]
+	mov rax, rdx
+	ret
+
 global _EFLAGS
 _EFLAGS:
 	pushf  				; push eflags into stack

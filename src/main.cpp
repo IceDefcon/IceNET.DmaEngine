@@ -12,5 +12,6 @@ int main(int argc, char* argv[]) {
         // This is the main loop
         if(shutdown) break;
     }
+    
     return 0;
 }
