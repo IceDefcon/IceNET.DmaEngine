@@ -1,7 +1,6 @@
 
 section .text
 
-
 global _CPU_RAX
 _CPU_RAX:
  	mov eax, 0h

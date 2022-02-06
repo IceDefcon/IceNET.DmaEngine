@@ -10,6 +10,7 @@ SRCS=\
     src/main.cpp \
     src/dma.cpp \
     src/timer.cpp \
+    src/server.cpp \
 
 SRCS_ASM=\
 	src/link.asm \

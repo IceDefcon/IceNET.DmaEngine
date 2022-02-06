@@ -23,7 +23,7 @@ extern "C" unsigned long _CPU_RBX(void);
 extern "C" unsigned long _CPU_RCX(void);
 extern "C" unsigned long _CPU_RDX(void);
 
-void Register_Dump(void) { 
+void RegDump(void) { 
 
     printf("\nGeneral-Purpose Registers:\n"); 
     printf(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n"); 
@@ -55,5 +55,5 @@ void Register_Dump(void) {
     printf("CPU ID RBX              : %#018" PRIx64 " \n",_CPU_RBX());
     printf("CPU ID RCX              : %#018" PRIx64 " \n",_CPU_RCX());
     printf("CPU ID RDX              : %#018" PRIx64 " \n",_CPU_RDX());
-}
 
+}
