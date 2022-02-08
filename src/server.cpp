@@ -41,7 +41,7 @@ void communication(int connfd)
 }
    
 // Driver function
-int InitServer()
+int InitServerTCP()
 {
     int sockfd, connfd;
     socklen_t len;

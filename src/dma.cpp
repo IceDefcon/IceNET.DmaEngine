@@ -49,7 +49,7 @@ void* DmaServerThread(void* args)
     sem_wait(&DmaServerSemaphore);
     printf("Dma Server Thread\n");
 
-    InitServer();
+    InitServerTCP();
 
     return 0;
 }
