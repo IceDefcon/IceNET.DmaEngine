@@ -8,4 +8,4 @@
 
 
 
-int InitServerTCP(void);
+int InitTCPServer(void);
