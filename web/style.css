@@ -13,3 +13,9 @@ h1,h2,h3 {
 	font-family: courier;
 	font-size: 30px
 }
+
+.buttons {
+	text-align: center;
+	font-size: 30px
+}
+
