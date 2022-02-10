@@ -1,21 +1,25 @@
 body {
 	font-size:10px
 }
-h1,h2,h3 {
+
+h1, h2 {
 	color:red;
 	text-align: center;
 	font-family: courier;
 	font-size: 30px
 }
+
+h3 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  border: 3px solid green;
+}
+
 #data{
 	color:blue;
 	text-align: center;
 	font-family: courier;
 	font-size: 30px
 }
-
-.buttons {
-	text-align: center;
-	font-size: 30px
-}
-
