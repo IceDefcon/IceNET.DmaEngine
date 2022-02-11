@@ -1,3 +1,6 @@
+#ifndef DUMP_H
+#define DUMP_H
+
 #include <inttypes.h>
 
 extern "C" unsigned long _RAX(void);
@@ -55,5 +58,6 @@ void RegDump(void) {
     printf("CPU ID RBX              : %#018" PRIx64 " \n",_CPU_RBX());
     printf("CPU ID RCX              : %#018" PRIx64 " \n",_CPU_RCX());
     printf("CPU ID RDX              : %#018" PRIx64 " \n",_CPU_RDX());
-
 }
+
+#endif /* DUMP_H */

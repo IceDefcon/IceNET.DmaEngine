@@ -1,6 +1,9 @@
+#ifndef DMA_H
+#define DMA_H
 
-
-extern int run;
 
 void DmaInit(void);
 void DmaTerminate(void);
+
+
+#endif /* DMA_H */
