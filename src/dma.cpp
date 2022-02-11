@@ -7,9 +7,6 @@
 
 #define BUFFER_SIZE 128
 
-int i = 0;
-char prev, curr;
-
 #ifndef __cplusplus
 # include <stdatomic.h>
 #else
@@ -17,8 +14,8 @@ char prev, curr;
 # define _Atomic(X) std::atomic< X >
 #endif
 
-_Atomic(char) source[BUFFER_SIZE];
-_Atomic(char) dest[BUFFER_SIZE];
+_Atomic(int) source[BUFFER_SIZE];
+_Atomic(int) dest[BUFFER_SIZE];
 
 sem_t DmaSwitchSemaphore; 
 sem_t DmaServerSemaphore; 
