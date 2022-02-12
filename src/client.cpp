@@ -5,24 +5,27 @@
 #include <sys/socket.h>
 #include <unistd.h> 
 #include <arpa/inet.h>
-#define MAX 80
+
+#include "client.h"
+
+#define TCP_BUFFER_SIZE 80
 #define PORT 8080
 #define SA struct sockaddr
 void func(int sockfd)
 {
-    char buff[MAX];
+    char buffer[TCP_BUFFER_SIZE];
     int n;
     for (;;) {
-        bzero(buff, sizeof(buff));
+        bzero(buffer, sizeof(buffer));
         printf("Enter the string : ");
         n = 0;
-        while ((buff[n++] = getchar()) != '\n')
+        while ((buffer[n++] = getchar()) != '\n')
             ;
-        write(sockfd, buff, sizeof(buff));
-        bzero(buff, sizeof(buff));
-        read(sockfd, buff, sizeof(buff));
-        printf("From Server : %s", buff);
-        if ((strncmp(buff, "exit", 4)) == 0) {
+        write(sockfd, buffer, sizeof(buffer));
+        bzero(buffer, sizeof(buffer));
+        read(sockfd, buffer, sizeof(buffer));
+        printf("From Server : %s", buffer);
+        if ((strncmp(buffer, "exit", 4)) == 0) {
             printf("Client Exit...\n");
             break;
         }

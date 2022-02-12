@@ -12,29 +12,37 @@
 #define SA struct sockaddr
 
 // Function designed for chat between client and server.
-void communication(int connfd)
+void communication(int connection)
 {
-    char buff[MAX];
-    int n;
+    char buffer[MAX];
+    int i;
     // infinite loop for chat
     for (;;) {
-        bzero(buff, MAX);
+
+        bzero(buffer, MAX);
    
-        // read the message from client and copy it in buffer
-        read(connfd, buff, sizeof(buff));
-        // print buffer which contains the client contents
-        printf("From client: %s\t To client : ", buff);
-        bzero(buff, MAX);
-        n = 0;
-        // copy server message in the buffer
-        while ((buff[n++] = getchar()) != '\n')
-            ;
+        // read the message from client and copy it in bufferer
+        read(connection, buffer, sizeof(buffer));
+        
+        // print bufferer which contains the client contents
+        printf("From client: %s\t To client : ", buffer);
+        bzero(buffer, MAX);
+        
+        i = 0;
+        
+        // copy server message in the bufferer
+        while ((buffer[i++] = getchar()) != '\n')
+        {
+            // While Loop until ---> \n in this case
+            // This can be anything
+        }
    
-        // and send that buffer to client
-        write(connfd, buff, sizeof(buff));
+        // and send that bufferer to client
+        write(connection, buffer, sizeof(buffer));
    
         // if msg contains "Exit" then server exit and chat ended.
-        if (strncmp("exit", buff, 4) == 0) {
+        if (strncmp("exit", buffer, 4) == 0) 
+        {
             printf("Server Exit...\n");
             break;
         }
@@ -43,27 +51,28 @@ void communication(int connfd)
    
 int InitTCPServer()
 {
-    int sockfd, connfd;
-    socklen_t len;
-    struct sockaddr_in servaddr, cli;
+    socklen_t length;
+    int socked, connection;
+    struct sockaddr_in ServerAddress, ClientAddress;
    
     // socket create and verification
-    sockfd = socket(AF_INET, SOCK_STREAM, 0);
-    if (sockfd == -1) {
+    socked = socket(AF_INET, SOCK_STREAM, 0);
+    if (socked == -1) {
         printf("socket creation failed...\n");
         exit(0);
     }
     else
         printf("Socket successfully created..\n");
-    bzero(&servaddr, sizeof(servaddr));
+    bzero(&ServerAddress, sizeof(ServerAddress));
    
     // assign IP, PORT
-    servaddr.sin_family = AF_INET;
-    servaddr.sin_addr.s_addr = htonl(INADDR_ANY);
-    servaddr.sin_port = htons(PORT);
+    ServerAddress.sin_family = AF_INET;
+    ServerAddress.sin_addr.s_addr = htonl(INADDR_ANY);
+    ServerAddress.sin_port = htons(PORT);
    
     // Binding newly created socket to given IP and verification
-    if ((bind(sockfd, (SA*)&servaddr, sizeof(servaddr))) != 0) {
+    if ((bind(socked, (SA*)&ServerAddress, sizeof(ServerAddress))) != 0) 
+    {
         printf("socket bind failed...\n");
         exit(0);
     }
@@ -71,17 +80,17 @@ int InitTCPServer()
         printf("Socket successfully binded..\n");
    
     // Now server is ready to listen and verification
-    if ((listen(sockfd, 5)) != 0) {
+    if ((listen(socked, 5)) != 0) {
         printf("Listen failed...\n");
         exit(0);
     }
     else
         printf("Server listening..\n");
-    len = sizeof(cli);
+    length = sizeof(ClientAddress);
    
     // Accept the data packet from client and verification
-    connfd = accept(sockfd, (SA*)&cli, &len);
-    if (connfd < 0) {
+    connection = accept(socked, (SA*)&ClientAddress, &length);
+    if (connection < 0) {
         printf("server accept failed...\n");
         exit(0);
     }
@@ -89,10 +98,10 @@ int InitTCPServer()
         printf("server accept the client...\n");
    
     // Function for chatting between client and server
-    communication(connfd);
+    communication(connection);
    
     // After chatting close the socket
-    close(sockfd);
+    close(socked);
 
     return 0;
 }
