@@ -3,6 +3,7 @@
 
 
 int InitTCPServer(void);
+int InitUDPServer(void);
 
 
 #endif /* SERVER_H */

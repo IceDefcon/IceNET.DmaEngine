@@ -4,6 +4,7 @@
 #include "dump.h"
 #include "timer.h"
 #include "server.h"
+#include "dma.h"
 
 #define BUFFER_SIZE 128
 
@@ -31,9 +32,20 @@ void* DmaSwitchThread(void* args)
     memset(dest, 0, sizeof(dest));
 
     sem_wait(&DmaSwitchSemaphore);
-    //
-    // Do the switch work and signal Working Thread
-    //
+    printf("Dma Switch Thread ---> Wait: DmaServerSemaphore\n");
+
+    printf("\n");
+    dma_engine  Dma_0;
+    data_engine Data_0;
+
+    Dma_0.Address = &Data_0.data; 
+    
+    for(int i = 0;i <ADDRESS_SPACE;i++)
+    {
+        printf("Dma_0.Address[%d] ---> 0x%x\n",i,(*Dma_0.Address)[i]);
+    }
+    printf("\n");
+
     printf("Dma Switch Thread\n");
     sem_post(&DmaServerSemaphore);
     printf("Dma Switch Thread ---> Post: DmaServerSemaphore\n");
@@ -44,7 +56,8 @@ void* DmaSwitchThread(void* args)
 void* DmaServerThread(void* args)
 {
     sem_wait(&DmaServerSemaphore);
-    printf("Dma Server Thread\n");
+    printf("Dma Server Thread ---> Wait: DmaServerSemaphore\n");
+    printf("Dma Server Thread\n\n");
 
     InitTCPServer();
 
@@ -55,7 +68,7 @@ void* DmaServerThread(void* args)
 void DmaInit(void)
 {
     sem_init(&DmaSwitchSemaphore, 0, 1);  // 0 --> only 1 processor, 0 --> inital value = 0 so it must be posted to be able to wait 
-    sem_init(&DmaServerSemaphore,  0, 0);
+    sem_init(&DmaServerSemaphore, 0, 0);
 
     // Creating Thread
     if(pthread_create(&DmaSwitch,NULL,&DmaSwitchThread,NULL) != 0) perror("Failed to create Switch thread");

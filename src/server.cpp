@@ -6,13 +6,17 @@
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <unistd.h>
+#include <arpa/inet.h>
 
 #define MAX 80
 #define PORT 8080
+#define MAXLINE 1024
+
 #define SA struct sockaddr
 
+
 // Function designed for chat between client and server.
-void communication(int connection)
+void CommTCP(int connection)
 {
     char buffer[MAX];
     int i;
@@ -49,20 +53,26 @@ void communication(int connection)
     }
 }
    
-int InitTCPServer()
+int InitTCPServer(void)
 {
+    int ServerSocket;
+    int connection;
     socklen_t length;
-    int socked, connection;
-    struct sockaddr_in ServerAddress, ClientAddress;
+    struct sockaddr_in ServerAddress;
+    struct sockaddr_in ClientAddress;
    
     // socket create and verification
-    socked = socket(AF_INET, SOCK_STREAM, 0);
-    if (socked == -1) {
+    ServerSocket = socket(AF_INET, SOCK_STREAM, 0);
+    if (ServerSocket == -1) 
+    {
         printf("socket creation failed...\n");
         exit(0);
     }
     else
+    {
         printf("Socket successfully created..\n");
+    }
+    
     bzero(&ServerAddress, sizeof(ServerAddress));
    
     // assign IP, PORT
@@ -71,7 +81,7 @@ int InitTCPServer()
     ServerAddress.sin_port = htons(PORT);
    
     // Binding newly created socket to given IP and verification
-    if ((bind(socked, (SA*)&ServerAddress, sizeof(ServerAddress))) != 0) 
+    if ((bind(ServerSocket, (SA*)&ServerAddress, sizeof(ServerAddress))) != 0) 
     {
         printf("socket bind failed...\n");
         exit(0);
@@ -80,28 +90,80 @@ int InitTCPServer()
         printf("Socket successfully binded..\n");
    
     // Now server is ready to listen and verification
-    if ((listen(socked, 5)) != 0) {
+    if ((listen(ServerSocket, 5)) != 0) 
+    {
         printf("Listen failed...\n");
         exit(0);
     }
     else
+    {
         printf("Server listening..\n");
+    }
+    
     length = sizeof(ClientAddress);
    
     // Accept the data packet from client and verification
-    connection = accept(socked, (SA*)&ClientAddress, &length);
-    if (connection < 0) {
+    connection = accept(ServerSocket, (SA*)&ClientAddress, &length);
+    if (connection < 0) 
+    {
         printf("server accept failed...\n");
         exit(0);
     }
     else
+    {
         printf("server accept the client...\n");
+    }
    
     // Function for chatting between client and server
-    communication(connection);
+    CommTCP(connection);
    
     // After chatting close the socket
-    close(socked);
+    close(ServerSocket);
 
+    return 0;
+}
+
+
+int InitUDPServer(void) 
+{
+    int sockfd;
+    char buffer[MAXLINE];
+    char *hello = "Hello from server";
+    struct sockaddr_in ServerAddress;
+    struct sockaddr_in ClientAddress;
+       
+    // Creating socket file descriptor
+    if ( (sockfd = socket(AF_INET, SOCK_DGRAM, 0)) < 0 ) 
+    {
+        perror("socket creation failed");
+        exit(EXIT_FAILURE);
+    }
+       
+    memset(&ServerAddress, 0, sizeof(ServerAddress));
+    memset(&ClientAddress, 0, sizeof(ClientAddress));
+       
+    // Filling server information
+    ServerAddress.sin_family    = AF_INET; // IPv4
+    ServerAddress.sin_addr.s_addr = INADDR_ANY;
+    ServerAddress.sin_port = htons(PORT);
+       
+    // Bind the socket with the server address
+    if ( bind(sockfd, (const struct sockaddr *)&ServerAddress, sizeof(ServerAddress)) < 0 )
+    {
+        perror("bind failed");
+        exit(EXIT_FAILURE);
+    }
+       
+    int n;
+    socklen_t len;
+   
+    len = sizeof(ClientAddress);  //len is value/resuslt
+   
+    n = recvfrom(sockfd, (char *)buffer, MAXLINE, MSG_WAITALL, ( struct sockaddr *) &ClientAddress,&len);
+    buffer[n] = '\0';
+    printf("Client : %s\n", buffer);
+    sendto(sockfd, (const char *)hello, strlen(hello), MSG_CONFIRM, (const struct sockaddr *) &ClientAddress,len);
+    printf("Hello message sent.\n"); 
+       
     return 0;
 }
