@@ -8,6 +8,8 @@
 #include <unistd.h>
 #include <arpa/inet.h>
 
+#include "global.h"
+
 #define MAX 80
 #define PORT 8080
 #define MAXLINE 1024
@@ -31,9 +33,10 @@ void CommTCP(int connection)
         // if msg contains "Exit" then server exit and chat ended.
         if (strncmp("set", buffer, 3) == 0) 
         {
-            printf("Client Class Construct \n");
+            CreateInterface = 1;
+            printf("CreateInterface ---> %d\n",CreateInterface);
         }
-        
+
         // print bufferer which contains the client contents
         printf("From client: %s\t To client : ", buffer);
         bzero(buffer, MAX);
@@ -54,6 +57,7 @@ void CommTCP(int connection)
         if (strncmp("exit", buffer, 4) == 0) 
         {
             printf("Server Exit...\n");
+            DmaInterfaceTerminate = 1;
             break;
         }
 

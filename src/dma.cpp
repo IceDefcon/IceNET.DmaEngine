@@ -5,6 +5,8 @@
 #include "timer.h"
 #include "server.h"
 #include "dma.h"
+#include "global.h"
+#include "interface.h"
 
 #define BUFFER_SIZE 128
 
@@ -20,19 +22,20 @@ _Atomic(int) dest[BUFFER_SIZE];
 
 sem_t DmaSwitchSemaphore; 
 sem_t DmaServerSemaphore; 
+sem_t DmaInterfaceSemaphore;
 
 // Thread Id
 pthread_t DmaSwitch;
 pthread_t DmaServer;
+pthread_t DmaInterface;
 
 void* DmaSwitchThread(void* args)
 {
+    sem_wait(&DmaSwitchSemaphore);
+    printf("IceNET 0 ---> Dma Switch Thread \n");
 
     memset(source, 0, sizeof(source));
     memset(dest, 0, sizeof(dest));
-
-    sem_wait(&DmaSwitchSemaphore);
-    printf("Dma Switch Thread ---> Wait: DmaServerSemaphore\n");
 
     printf("\n");
     dma_engine  Dma_0;
@@ -46,9 +49,8 @@ void* DmaSwitchThread(void* args)
     }
     printf("\n");
 
-    printf("Dma Switch Thread\n");
     sem_post(&DmaServerSemaphore);
-    printf("Dma Switch Thread ---> Post: DmaServerSemaphore\n");
+    sem_post(&DmaInterfaceSemaphore);
 
     return 0;
 }
@@ -56,31 +58,62 @@ void* DmaSwitchThread(void* args)
 void* DmaServerThread(void* args)
 {
     sem_wait(&DmaServerSemaphore);
-    printf("Dma Server Thread ---> Wait: DmaServerSemaphore\n");
-    printf("Dma Server Thread\n\n");
+    printf("IceNET 1 ---> Dma Server Thread \n");
 
     InitTCPServer();
 
     return 0;
 }
 
+void* DmaInterfaceThread(void* args)
+{
+    sem_wait(&DmaInterfaceSemaphore);
+    printf("IceNET 2 ---> Dma Interface Thread \n");
 
-void DmaInit(void)
+    interface *pinterface;
+
+    while(true)
+    {
+        if(CreateInterface == 1) 
+        {
+            pinterface = new interface();
+
+            pinterface->setLength(100);
+            pinterface->getLength();
+
+            CreateInterface = 0;   
+
+        }
+
+        if(DmaInterfaceTerminate == 1) 
+        {
+            break;
+        }
+    }
+
+    return 0;
+}
+
+void InitDma(void)
 {
     sem_init(&DmaSwitchSemaphore, 0, 1);  // 0 --> only 1 processor, 0 --> inital value = 0 so it must be posted to be able to wait 
     sem_init(&DmaServerSemaphore, 0, 0);
+    sem_init(&DmaInterfaceSemaphore, 0, 0);
 
     // Creating Thread
     if(pthread_create(&DmaSwitch,NULL,&DmaSwitchThread,NULL) != 0) perror("Failed to create Switch thread");
     if(pthread_create(&DmaServer,NULL,&DmaServerThread,NULL) != 0) perror("Failed to create Work thread");
+    if(pthread_create(&DmaInterface,NULL,&DmaInterfaceThread,NULL) != 0) perror("Failed to create Work thread");
     if(pthread_join(DmaSwitch, NULL) != 0) perror("pthread_create() error");
     if(pthread_join(DmaServer, NULL) != 0) perror("pthread_create() error");
+    if(pthread_join(DmaInterface, NULL) != 0) perror("pthread_create() error");
 
     sem_destroy(&DmaSwitchSemaphore);
     sem_destroy(&DmaServerSemaphore);
+    sem_destroy(&DmaInterfaceSemaphore);
 }
 
-void DmaTerminate(void)
+void TerminateDma(void)
 {
     printf("\n");
     printf("-----=====[ ------------------- ]=====-----\n");

@@ -15,8 +15,8 @@ struct data_engine
 };
 
 
-void DmaInit(void);
-void DmaTerminate(void);
+void InitDma(void);
+void TerminateDma(void);
 
 
 #endif /* DMA_H */
