@@ -27,6 +27,12 @@ void CommTCP(int connection)
    
         // read the message from client and copy it in bufferer
         read(connection, buffer, sizeof(buffer));
+
+        // if msg contains "Exit" then server exit and chat ended.
+        if (strncmp("set", buffer, 3) == 0) 
+        {
+            printf("Client Class Construct \n");
+        }
         
         // print bufferer which contains the client contents
         printf("From client: %s\t To client : ", buffer);
@@ -50,6 +56,7 @@ void CommTCP(int connection)
             printf("Server Exit...\n");
             break;
         }
+
     }
 }
    
@@ -138,7 +145,11 @@ int InitUDPServer(void)
         perror("socket creation failed");
         exit(EXIT_FAILURE);
     }
-       
+    else
+    {
+        printf("Server listening..\n");
+    }
+
     memset(&ServerAddress, 0, sizeof(ServerAddress));
     memset(&ClientAddress, 0, sizeof(ClientAddress));
        
