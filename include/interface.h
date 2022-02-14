@@ -21,13 +21,13 @@ class interface
 // Constructor
 interface::interface(void) 
 {
-	cout << "Object is being created" << endl;
+	cout << "IceNET 3 ---> Interface Created" << endl;
 }
 
 // Destructor
 interface::~interface(void) 
 {
-	cout << "Object is being deleted" << endl;
+	cout << "IceNET 4 ---> Interface Destroyed" << endl;
 }
 
 void interface::setLength( double len ) 

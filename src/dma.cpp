@@ -50,6 +50,7 @@ void* DmaSwitchThread(void* args)
     printf("\n");
 
     sem_post(&DmaServerSemaphore);
+    delay(100); // For the TCP Server to initialize
     sem_post(&DmaInterfaceSemaphore);
 
     return 0;
@@ -82,11 +83,11 @@ void* DmaInterfaceThread(void* args)
             pinterface->getLength();
 
             CreateInterface = 0;   
-
         }
 
         if(DmaInterfaceTerminate == 1) 
         {
+            delete pinterface;
             break;
         }
     }

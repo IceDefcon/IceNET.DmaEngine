@@ -38,7 +38,7 @@ void CommTCP(int connection)
         }
 
         // print bufferer which contains the client contents
-        printf("From client: %s\t To client : ", buffer);
+        // printf("From client: %s\t To client : ", buffer);
         bzero(buffer, MAX);
         
         i = 0;
