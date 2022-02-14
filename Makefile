@@ -3,7 +3,7 @@ TARGET 		= dma
 CC  		= g++
 ASM 		= nasm 
 AFLAGS 		= -f elf64
-CFLAGS 		= -m64 -lpthread -lrt 
+CFLAGS 		= -m64 -lpthread -lrt -lmysqlclient
 ASM_OBJECTS	= src/link.o
 
 SRCS=\
@@ -12,6 +12,7 @@ SRCS=\
     src/timer.cpp \
     src/server.cpp \
     src/global.cpp \
+    src/database.cpp \
 
 SRCS_ASM=\
 	src/link.asm \

@@ -7,6 +7,7 @@
 #include "dma.h"
 #include "global.h"
 #include "interface.h"
+#include "database.h"
 
 #define BUFFER_SIZE 128
 
@@ -23,11 +24,13 @@ _Atomic(int) dest[BUFFER_SIZE];
 sem_t DmaSwitchSemaphore; 
 sem_t DmaServerSemaphore; 
 sem_t DmaInterfaceSemaphore;
+sem_t DmaMySQLSemaphore;
 
 // Thread Id
 pthread_t DmaSwitch;
 pthread_t DmaServer;
 pthread_t DmaInterface;
+pthread_t DmaMySQL;
 
 void* DmaSwitchThread(void* args)
 {
@@ -52,6 +55,7 @@ void* DmaSwitchThread(void* args)
     sem_post(&DmaServerSemaphore);
     delay(100); // For the TCP Server to initialize
     sem_post(&DmaInterfaceSemaphore);
+    sem_post(&DmaMySQLSemaphore);
 
     return 0;
 }
@@ -87,6 +91,7 @@ void* DmaInterfaceThread(void* args)
 
         if(DmaInterfaceTerminate == 1) 
         {
+            delay(100); // For the Tcp Server to terminate
             delete pinterface;
             break;
         }
@@ -95,23 +100,37 @@ void* DmaInterfaceThread(void* args)
     return 0;
 }
 
+void* DmaMySQLThread(void* args)
+{
+    sem_wait(&DmaMySQLSemaphore);
+
+    InitMySQL();
+
+    return 0;
+}
+
 void InitDma(void)
 {
-    sem_init(&DmaSwitchSemaphore, 0, 1);  // 0 --> only 1 processor, 0 --> inital value = 0 so it must be posted to be able to wait 
-    sem_init(&DmaServerSemaphore, 0, 0);
+    sem_init(&DmaSwitchSemaphore,    0, 1);  // 0 --> only 1 processor, 0 --> inital value = 0 so it must be posted to be able to wait 
+    sem_init(&DmaServerSemaphore,    0, 0);
     sem_init(&DmaInterfaceSemaphore, 0, 0);
+    sem_init(&DmaMySQLSemaphore,     0, 0);
+
 
     // Creating Thread
     if(pthread_create(&DmaSwitch,NULL,&DmaSwitchThread,NULL) != 0) perror("Failed to create Switch thread");
     if(pthread_create(&DmaServer,NULL,&DmaServerThread,NULL) != 0) perror("Failed to create Work thread");
     if(pthread_create(&DmaInterface,NULL,&DmaInterfaceThread,NULL) != 0) perror("Failed to create Work thread");
+    if(pthread_create(&DmaMySQL,NULL,&DmaMySQLThread,NULL) != 0) perror("Failed to create Work thread");
     if(pthread_join(DmaSwitch, NULL) != 0) perror("pthread_create() error");
     if(pthread_join(DmaServer, NULL) != 0) perror("pthread_create() error");
     if(pthread_join(DmaInterface, NULL) != 0) perror("pthread_create() error");
+    if(pthread_join(DmaMySQL, NULL) != 0) perror("pthread_create() error");
 
     sem_destroy(&DmaSwitchSemaphore);
     sem_destroy(&DmaServerSemaphore);
     sem_destroy(&DmaInterfaceSemaphore);
+    sem_destroy(&DmaMySQLSemaphore);
 }
 
 void TerminateDma(void)
