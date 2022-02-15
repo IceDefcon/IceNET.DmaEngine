@@ -1,50 +1,61 @@
-/* Simple C program that connects to MySQL Database server*/
-#include <mysql/mysql.h>
-#include <stdio.h>
-#include <iostream> 
+#include <stdlib.h>
+#include <iostream>
+#include <mysql_connection.h>
 
-void InitMySQL(void) 
+#include <cppconn/driver.h>
+#include <cppconn/exception.h>
+#include <cppconn/resultset.h>
+#include <cppconn/statement.h>
+
+using namespace std;
+
+int InitMySQL(void)
 {
-	MYSQL *conn;
-	MYSQL_RES *res;
-	MYSQL_ROW row;
+	cout << endl;
+	cout << "Running 'SELECT 'Hello World!' >> AS _message'..." << endl;
 
-	// mysql -h serwer2246104.home.pl -u 35670400_icenet -p 35670400_icenet
-	char *server 	= "serwer2246104.home.pl";
-	char *user 		= "35670400_icenet";
-	char *password 	= "D3fc0d!ng!5590"; /* set me first */
-	char *database 	= "35670400_icenet";
-
-	conn = mysql_init(NULL);
-
-	/* Connect to database */
-	if (!mysql_real_connect(conn, server,user, password, database, 0, NULL, 0)) 
+	try 
 	{
-		fprintf(stderr, "%s\n", mysql_error(conn));
-		exit(1);
-	}
-	else
+		sql::Driver *driver;
+		sql::Connection *con;
+		sql::Statement *stmt;
+		sql::ResultSet *res;
+
+		/* Create a connection */
+		driver = get_driver_instance();
+		con = driver->connect("serwer2246104.home.pl", "35670400_icenet", "D3fc0d!ng!5590");
+
+		/* Connect to the MySQL test database */
+		con->setSchema("35670400_icenet");
+
+		stmt = con->createStatement();
+		res = stmt->executeQuery("SELECT 'Hello World!' AS _message");
+
+		while (res->next()) 
+		{
+			cout << "\t... MySQL replies: ";
+			/* Access column data by alias or column name */
+			cout << res->getString("_message") << endl;
+			cout << "\t... MySQL says it again: ";
+			/* Access column data by numeric offset, 1 is the first column */
+			cout << res->getString(1) << endl;
+		}
+
+		delete res;
+		delete stmt;
+		delete con;
+
+	} 
+	catch (sql::SQLException &e) 
 	{
-		printf("IceNET 3 ---> MySQL database connected\n");	
+		cout << "# ERR: SQLException in " << __FILE__;
+		cout << "(" << __FUNCTION__ << ") on line " << __LINE__ << endl;
+		cout << "# ERR: " << e.what();
+		cout << " (MySQL error code: " << e.getErrorCode();
+		cout << ", SQLState: " << e.getSQLState() << " )" << endl;
 	}
 
-	/* send SQL query */
-	if (mysql_query(conn, "show tables")) 
-	{
-		fprintf(stderr, "%s\n", mysql_error(conn));
-		exit(1);
-	}
+	cout << endl;
 
-	res = mysql_use_result(conn);
-
-	/* output table name */
-	printf("IceNET 4 ---> MySQL Tables in mysql database:\n");
-	while ((row = mysql_fetch_row(res)) != NULL)
-	{
-		printf("%s \n", row[0]);
-	}
-
-	/* close connection */
-	mysql_free_result(res);
-	mysql_close(conn);
+	return EXIT_SUCCESS;
 }

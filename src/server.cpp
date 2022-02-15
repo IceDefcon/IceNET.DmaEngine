@@ -17,50 +17,41 @@
 #define SA struct sockaddr
 
 
-// Function designed for chat between client and server.
-void CommTCP(int connection)
+void ProtocolTCP(int connection)
 {
     char buffer[MAX];
-    // int i;
-    // infinite loop for chat
-    for (;;) {
+    int i;
 
+    while(true) 
+    {
         bzero(buffer, MAX);
    
-        // read the message from client and copy it in bufferer
         read(connection, buffer, sizeof(buffer));
 
-        // if msg contains "Exit" then server exit and chat ended.
         if (strncmp("set", buffer, 3) == 0) 
         {
             CreateInterface = 1;
-            printf("CreateInterface ---> %d\n",CreateInterface);
+            printf("IceNET 3 ---> CreateInterface [%d]\n",CreateInterface);
         }
 
-        // print bufferer which contains the client contents
-        // printf("From client: %s\t To client : ", buffer);
         // bzero(buffer, MAX);
         
         // i = 0;
         
-        // // copy server message in the bufferer
         // while ((buffer[i++] = getchar()) != '\n')
         // {
         //     // While Loop until ---> \n in this case
         //     // This can be anything
         // }
    
-        // // and send that bufferer to client
         // write(connection, buffer, sizeof(buffer));
    
-        // if msg contains "Exit" then server exit and chat ended.
         if (strncmp("exit", buffer, 4) == 0) 
         {
             printf("Server Exit...\n");
             DmaInterfaceTerminate = 1;
             break;
         }
-
     }
 }
    
@@ -72,7 +63,6 @@ int InitTCPServer(void)
     struct sockaddr_in ServerAddress;
     struct sockaddr_in ClientAddress;
    
-    // socket create and verification
     ServerSocket = socket(AF_INET, SOCK_STREAM, 0);
     if (ServerSocket == -1) 
     {
@@ -126,7 +116,7 @@ int InitTCPServer(void)
     }
    
     // Function for chatting between client and server
-    CommTCP(connection);
+    ProtocolTCP(connection);
    
     // After chatting close the socket
     close(ServerSocket);

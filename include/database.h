@@ -2,7 +2,7 @@
 #define DATABASE_H
 
 
-void InitMySQL(void);
+int InitMySQL(void);
 
 
 #endif /* DATABASE_H */
