@@ -23,7 +23,7 @@ int InitMySQL(void)
 
 		/* Create a connection */
 		driver = get_driver_instance();
-		con = driver->connect("serwer2246104.home.pl", "35670400_icenet", "D3fc0d!ng!5590");
+		con = driver->connect("serwer2246104.home.pl", "35670400_icenet", "password123");
 
 		/* Connect to the MySQL test database */
 		con->setSchema("35670400_icenet");
