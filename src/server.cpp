@@ -21,7 +21,7 @@
 void CommTCP(int connection)
 {
     char buffer[MAX];
-    int i;
+    // int i;
     // infinite loop for chat
     for (;;) {
 
@@ -39,19 +39,19 @@ void CommTCP(int connection)
 
         // print bufferer which contains the client contents
         // printf("From client: %s\t To client : ", buffer);
-        bzero(buffer, MAX);
+        // bzero(buffer, MAX);
         
-        i = 0;
+        // i = 0;
         
-        // copy server message in the bufferer
-        while ((buffer[i++] = getchar()) != '\n')
-        {
-            // While Loop until ---> \n in this case
-            // This can be anything
-        }
+        // // copy server message in the bufferer
+        // while ((buffer[i++] = getchar()) != '\n')
+        // {
+        //     // While Loop until ---> \n in this case
+        //     // This can be anything
+        // }
    
-        // and send that bufferer to client
-        write(connection, buffer, sizeof(buffer));
+        // // and send that bufferer to client
+        // write(connection, buffer, sizeof(buffer));
    
         // if msg contains "Exit" then server exit and chat ended.
         if (strncmp("exit", buffer, 4) == 0) 
