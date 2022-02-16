@@ -55,6 +55,7 @@ void* DmaSwitchThread(void* args)
     sem_post(&DmaServerSemaphore);
     delay(100); // For the TCP Server to initialize
     sem_post(&DmaInterfaceSemaphore);
+    delay(100); // For the  Interface to initialize
     sem_post(&DmaMySQLSemaphore);
 
     return 0;
@@ -65,7 +66,8 @@ void* DmaServerThread(void* args)
     sem_wait(&DmaServerSemaphore);
     printf("IceNET 1 ---> Dma Server Thread \n");
 
-    InitTCPServer();
+    //InitTCPServer();
+    DmaInterfaceTerminate = 1;
 
     return 0;
 }

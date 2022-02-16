@@ -12,7 +12,6 @@ using namespace std;
 int InitMySQL(void)
 {
 	cout << endl;
-	cout << "Running 'SELECT 'Hello World!' >> AS _message'..." << endl;
 
 	try 
 	{
@@ -29,14 +28,15 @@ int InitMySQL(void)
 		con->setSchema("35670400_icenet");
 
 		stmt = con->createStatement();
-		res = stmt->executeQuery("SELECT 'Hello World!' AS _message");
+		cout << "IceNET executeQuery ---> 'SELECT 'Hello World!' AS DmaMessage'" << endl;
+		res = stmt->executeQuery("SELECT 'Hello World!' AS DmaMessage");
 
 		while (res->next()) 
 		{
-			cout << "\t... MySQL replies: ";
+			cout << endl << "IceNET MySQL ---> ";
 			/* Access column data by alias or column name */
-			cout << res->getString("_message") << endl;
-			cout << "\t... MySQL says it again: ";
+			cout << res->getString("DmaMessage") << endl;
+			cout << "IceNET MySQL ---> ";
 			/* Access column data by numeric offset, 1 is the first column */
 			cout << res->getString(1) << endl;
 		}
