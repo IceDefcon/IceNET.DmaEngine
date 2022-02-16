@@ -8,7 +8,7 @@ It is still under development
 
 	Compile Engine ---> make
 
-Whenever C/C++ function is executed ---> input arguments to that function is translated to assemblies in the following order@
+Whenever C/C++ function is executed ---> Arguments of that function are stored in the following registers
 
 	1st ---> RCX
 	2nd ---> RDX
@@ -16,6 +16,10 @@ Whenever C/C++ function is executed ---> input arguments to that function is tra
 	4th ---> RDI
 
 In order to connect to the TCP server and talk to SQL database a TCP client is required 
+
+IP Address mus be change to Server Address
+
+TCP Client and pthreads on the Server side will be terminated when "exit" command is send
 
 	#include <netdb.h>
 	#include <stdio.h>
