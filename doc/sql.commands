@@ -7,3 +7,24 @@ CREATE TABLE `35670400_icenet`.`dma` ( `id` INT(11) NOT NULL AUTO_INCREMENT , `a
 // Insert into above table ---> x2 Full values
 //
 INSERT INTO `dma` (`id`, `address`, `data`, `length`) VALUES (NULL, '1000', '333', '1'), (NULL, '2000', '444', '1') 
+
+
+
+
+//
+// mysql ---> interface talk
+//
+show databases
+;
+
+use 35670400_icenet
+
+show tables
+;
+
+
+ELECT * FROM `songs`
+;
+
+ELECT * FROM `dma`
+;
