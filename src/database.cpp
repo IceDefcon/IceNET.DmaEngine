@@ -28,18 +28,23 @@ int InitMySQL(void)
 		con->setSchema("35670400_icenet");
 
 		stmt = con->createStatement();
-		cout << "IceNET executeQuery ---> 'SELECT 'Hello World!' AS DmaMessage'" << endl;
-		res = stmt->executeQuery("SELECT 'Hello World!' AS DmaMessage");
 
+		res = stmt->executeQuery("SELECT * FROM dma");
 		while (res->next()) 
 		{
-			cout << endl << "IceNET MySQL ---> ";
-			/* Access column data by alias or column name */
-			cout << res->getString("DmaMessage") << endl;
-			cout << "IceNET MySQL ---> ";
-			/* Access column data by numeric offset, 1 is the first column */
-			cout << res->getString(1) << endl;
+			// You can use either numeric offsets...
+			cout << "id = " << res->getInt(1) << "  address = " << res->getInt(2) << "  data = " << res->getInt(3) << endl;
 		}
+
+		// while (res->next()) 
+		// {
+		// 	cout << endl << "IceNET MySQL ---> ";
+		// 	/* Access column data by alias or column name */
+		// 	cout << res->getString("DmaMessage") << endl;
+		// 	cout << "IceNET MySQL ---> ";
+		// 	/* Access column data by numeric offset, 1 is the first column */
+		// 	cout << res->getString(1) << endl;
+		// }
 
 		delete res;
 		delete stmt;
