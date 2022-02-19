@@ -9,6 +9,8 @@
 
 using namespace std;
 
+// mysql -h serwer2246104.home.pl -u 35670400_icenet -p 35670400_icenet
+
 int InitMySQL(void)
 {
 	cout << endl;
@@ -33,18 +35,10 @@ int InitMySQL(void)
 		while (res->next()) 
 		{
 			// You can use either numeric offsets...
-			cout << "id = " << res->getInt(1) << "  address = " << res->getInt(2) << "  data = " << res->getInt(3) << endl;
+			cout 	<< "IceNET --->" << " id = " << res->getInt(1) 
+			 		<< " address = " << res->getInt(2) 
+			 		<< " data = " << res->getInt(3) << endl;
 		}
-
-		// while (res->next()) 
-		// {
-		// 	cout << endl << "IceNET MySQL ---> ";
-		// 	/* Access column data by alias or column name */
-		// 	cout << res->getString("DmaMessage") << endl;
-		// 	cout << "IceNET MySQL ---> ";
-		// 	/* Access column data by numeric offset, 1 is the first column */
-		// 	cout << res->getString(1) << endl;
-		// }
 
 		delete res;
 		delete stmt;

@@ -4,27 +4,20 @@
 CREATE TABLE `35670400_icenet`.`dma` ( `id` INT(11) NOT NULL AUTO_INCREMENT , `address` INT(11) NOT NULL , `data` INT(11) NOT NULL , `length` INT(11) NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB; 
 
 //
-// Insert into above table ---> x2 Full values
+// Insrert value
 //
-INSERT INTO `dma` (`id`, `address`, `data`, `length`) VALUES (NULL, '1000', '333', '1'), (NULL, '2000', '444', '1') 
-
-
-
+INSERT INTO dma (id, address, data, length) VALUES (NULL, '5000', '5555', '1'), (NULL, '6000', '6666', '1');
 
 //
 // mysql ---> interface talk
 //
-show databases
-;
+show databases;
 
 use 35670400_icenet
 
-show tables
-;
+show tables;
 
 
-ELECT * FROM `songs`
-;
+SELECT * FROM songs;
 
-ELECT * FROM `dma`
-;
+SELECT * FROM dma;
