@@ -58,3 +58,15 @@ int InitMySQL(void)
 
 	return EXIT_SUCCESS;
 }
+
+int AddTableComponent(void)
+{
+	cout << "IceNET ---> Execute add table component" << endl;
+
+	return 0;
+}
+
+int ReadDmaTable(void)
+{
+	return EXIT_SUCCESS;
+}

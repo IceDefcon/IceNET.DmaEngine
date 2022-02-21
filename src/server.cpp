@@ -9,6 +9,7 @@
 #include <arpa/inet.h>
 
 #include "global.h"
+#include "database.h"
 
 #define MAX 80
 #define PORT 8080
@@ -46,7 +47,12 @@ void ProtocolTCP(int connection)
    
         // write(connection, buffer, sizeof(buffer));
    
-        if (strncmp("exit", buffer, 4) == 0) 
+        if(strncmp("add", buffer, 3) == 0)
+        {
+            AddTableComponent();
+        }
+
+        if(strncmp("exit", buffer, 4) == 0) 
         {
             printf("Server Exit...\n");
             DmaInterfaceTerminate = 1;

@@ -66,7 +66,8 @@ void* DmaServerThread(void* args)
     sem_wait(&DmaServerSemaphore);
     printf("IceNET 1 ---> Dma Server Thread \n");
 
-    //InitTCPServer();
+    InitTCPServer();
+
     DmaInterfaceTerminate = 1;
 
     return 0;
