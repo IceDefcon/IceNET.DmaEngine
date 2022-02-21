@@ -46,7 +46,12 @@ void ProtocolTCP(int connection)
         // }
    
         // write(connection, buffer, sizeof(buffer));
-   
+
+        if(strncmp("read", buffer, 4) == 0)
+        {
+            ReadDmaTable();
+        }   
+
         if(strncmp("add", buffer, 3) == 0)
         {
             AddTableComponent();
@@ -54,6 +59,8 @@ void ProtocolTCP(int connection)
 
         if(strncmp("exit", buffer, 4) == 0) 
         {
+            DeleteDatabase();
+            
             printf("Server Exit...\n");
             DmaInterfaceTerminate = 1;
             break;

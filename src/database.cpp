@@ -11,17 +11,17 @@ using namespace std;
 
 // mysql -h serwer2246104.home.pl -u 35670400_icenet -p 35670400_icenet
 
+		sql::Driver *driver;
+		sql::Connection *con;
+		sql::Statement *stmt;
+		sql::ResultSet *res;
+
 int InitMySQL(void)
 {
 	cout << endl;
 
 	try 
 	{
-		sql::Driver *driver;
-		sql::Connection *con;
-		sql::Statement *stmt;
-		sql::ResultSet *res;
-
 		/* Create a connection */
 		driver = get_driver_instance();
 		con = driver->connect("serwer2246104.home.pl", "35670400_icenet", "password123");
@@ -30,19 +30,6 @@ int InitMySQL(void)
 		con->setSchema("35670400_icenet");
 
 		stmt = con->createStatement();
-
-		res = stmt->executeQuery("SELECT * FROM dma");
-		while (res->next()) 
-		{
-			// You can use either numeric offsets...
-			cout 	<< "IceNET --->" << " id = " << res->getInt(1) 
-			 		<< " address = " << res->getInt(2) 
-			 		<< " data = " << res->getInt(3) << endl;
-		}
-
-		delete res;
-		delete stmt;
-		delete con;
 
 	} 
 	catch (sql::SQLException &e) 
@@ -68,5 +55,23 @@ int AddTableComponent(void)
 
 int ReadDmaTable(void)
 {
+	res = stmt->executeQuery("SELECT * FROM dma");
+	while (res->next()) 
+	{
+		// You can use either numeric offsets...
+		cout 	<< "IceNET --->" << " id = " << res->getInt(1) 
+		 		<< " address = " << res->getInt(2) 
+		 		<< " data = " << res->getInt(3) << endl;
+	}
+
+	return EXIT_SUCCESS;
+}
+
+int DeleteDatabase(void)
+{
+	delete res;
+	delete stmt;
+	delete con;
+
 	return EXIT_SUCCESS;
 }
