@@ -61,7 +61,7 @@ int InitMySQL(void)
 
 int AddTableComponent(void)
 {
-	cout << "IceNET ---> Execute add table component" << endl;
+	cout << "IceNET ---> INSERT INTO dma (id, address, data, length) VALUES (NULL, '5000', '5555', '1'), (NULL, '6000', '6666', '1');" << endl;
 
 	return 0;
 }
