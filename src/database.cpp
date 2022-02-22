@@ -47,10 +47,14 @@ int InitMySQL(void)
 }
 
 int AddTableComponent(void)
-{
-	cout << "IceNET ---> INSERT INTO dma (id, address, data, length) VALUES (NULL, '5000', '5555', '1'), (NULL, '6000', '6666', '1');" << endl;
+{	
+	char buffer[256];
+	sprintf(buffer,"INSERT INTO dma (id, address, data, length) VALUES (NULL, '3355', '7766', '1')");
 
-	return 0;
+	cout << "IceNET ---> Adding Dma Table Object" << endl;
+	stmt->execute(buffer);
+
+	return EXIT_SUCCESS;
 }
 
 int ReadDmaTable(void)

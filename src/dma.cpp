@@ -35,7 +35,7 @@ pthread_t DmaMySQL;
 void* DmaSwitchThread(void* args)
 {
     sem_wait(&DmaSwitchSemaphore);
-    printf("IceNET 0 ---> Dma Switch Thread \n");
+    cout << "IceNET ---> Dma Switch Thread" << endl;
 
     memset(source, 0, sizeof(source));
     memset(dest, 0, sizeof(dest));
@@ -64,7 +64,7 @@ void* DmaSwitchThread(void* args)
 void* DmaServerThread(void* args)
 {
     sem_wait(&DmaServerSemaphore);
-    printf("IceNET 1 ---> Dma Server Thread \n");
+    cout << "IceNET ---> Dma Server Thread" << endl;
 
     InitTCPServer();
 
@@ -76,7 +76,7 @@ void* DmaServerThread(void* args)
 void* DmaInterfaceThread(void* args)
 {
     sem_wait(&DmaInterfaceSemaphore);
-    printf("IceNET 2 ---> Dma Interface Thread \n");
+    cout << "IceNET ---> Dma Interface Thread" << endl;
 
     interface *pinterface;
 
