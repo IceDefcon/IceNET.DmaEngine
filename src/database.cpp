@@ -9,8 +9,6 @@
 
 using namespace std;
 
-// mysql -h serwer2246104.home.pl -u 35670400_icenet -p 35670400_icenet
-
 		sql::Driver *driver;
 		sql::Connection *con;
 		sql::Statement *stmt;
@@ -46,17 +44,6 @@ int InitMySQL(void)
 	return EXIT_SUCCESS;
 }
 
-int AddTableComponent(void)
-{	
-	char buffer[256];
-	sprintf(buffer,"INSERT INTO dma (id, address, data, length) VALUES (NULL, '3355', '7766', '1')");
-
-	cout << "IceNET ---> Adding Dma Table Object" << endl;
-	stmt->execute(buffer);
-
-	return EXIT_SUCCESS;
-}
-
 int ReadDmaTable(void)
 {
 	res = stmt->executeQuery("SELECT * FROM dma");
@@ -67,6 +54,42 @@ int ReadDmaTable(void)
 		 		<< " address = " << res->getInt(2) 
 		 		<< " data = " << res->getInt(3) << endl;
 	}
+
+	return EXIT_SUCCESS;
+}
+
+int ReadLastId(void)
+{
+	int ret;
+	res = stmt->executeQuery("SELECT MAX(id) FROM dma");
+
+	while (res->next()) 
+	{
+		// You can use either numeric offsets...
+		ret = res->getInt(1);
+	}
+	
+	return ret;
+}
+
+int InsertIntoDmaTable(void)
+{	
+	char buffer[256];
+	sprintf(buffer,"INSERT INTO dma (id, address, data, length) VALUES (NULL, '3355', '7766', '1')");
+
+	cout << "IceNET ---> Insert Into Dma Table" << endl;
+	stmt->execute(buffer);
+
+	return EXIT_SUCCESS;
+}
+
+int DeleteFormDmaTable(void)
+{
+	char buffer[256];
+	sprintf(buffer,"DELETE FROM dma WHERE dma.id = %d",ReadLastId());
+
+	cout << "IceNET ---> Remove From Dma Table" << endl;
+	stmt->execute(buffer);
 
 	return EXIT_SUCCESS;
 }

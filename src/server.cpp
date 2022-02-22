@@ -54,13 +54,18 @@ void ProtocolTCP(int connection)
 
         if(strncmp("add", buffer, 3) == 0)
         {
-            AddTableComponent();
+            InsertIntoDmaTable();
+        }
+
+        if(strncmp("del", buffer, 3) == 0)
+        {
+            DeleteFormDmaTable();
         }
 
         if(strncmp("exit", buffer, 4) == 0) 
         {
             DeleteDatabase();
-            
+
             printf("Server Exit...\n");
             DmaInterfaceTerminate = 1;
             break;

@@ -4,7 +4,10 @@
 
 int InitMySQL(void);
 int ReadDmaTable(void);
+int ReadLastId(void);
+int InsertIntoDmaTable(void);
+int DeleteFormDmaTable(void);
 int DeleteDatabase(void);
-int AddTableComponent(void);
+
 
 #endif /* DATABASE_H */
