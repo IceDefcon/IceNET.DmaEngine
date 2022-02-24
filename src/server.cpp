@@ -51,9 +51,14 @@ void ProtocolTCP(int connection)
             DeleteFormDmaTable();
         }
 
-        if(strncmp("exit", buffer, 4) == 0) 
+        if(strncmp("exit", buffer, 4) == 0)
         {
             DeleteDmaTable();
+            break;
+        }
+
+        if(strncmp("terminate", buffer, 4) == 0) 
+        {
             DeleteServerTable();
             DeleteDatabase();
 
@@ -113,6 +118,8 @@ int InitTCPServer(void)
     
     length = sizeof(ClientAddress);
    
+    NextClient:
+
     // Accept the data packet from client and verification
     connection = accept(ServerSocket, (SA*)&ClientAddress, &length);
     if (connection < 0) 
@@ -128,7 +135,8 @@ int InitTCPServer(void)
    
     // Function for chatting between client and server
     ProtocolTCP(connection);
-   
+    if(DmaInterfaceTerminate == 0) goto NextClient;
+
     // After chatting close the socket
     close(ServerSocket);
 
