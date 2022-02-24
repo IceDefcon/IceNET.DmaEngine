@@ -57,12 +57,13 @@ void ProtocolTCP(int connection)
             break;
         }
 
-        if(strncmp("terminate", buffer, 4) == 0) 
+        if(strncmp("terminate", buffer, 9) == 0) 
         {
+            DeleteDmaTable();
             DeleteServerTable();
             DeleteDatabase();
 
-            printf("Server Exit...\n");
+            printf("IceNET ---> Server Exit \n");
             DmaInterfaceTerminate = 1;
             break;
         }
