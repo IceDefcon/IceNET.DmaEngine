@@ -1,4 +1,4 @@
-# IceNET.DmaEngine ---> Mathematical model of parallelepiped volume enclosed in dimentional sphere
+# IceNET.DmaEngine >>> Mathematical model of parallelepiped volume enclosed in the dimentional sphere
 
 It is still under development
 
