@@ -8,6 +8,7 @@
 #include <unistd.h>
 #include <arpa/inet.h>
 
+#include "timer.h"
 #include "global.h"
 #include "database.h"
 
@@ -32,20 +33,8 @@ void ProtocolTCP(int connection)
         if (strncmp("set", buffer, 3) == 0) 
         {
             CreateInterface = 1;
-            printf("IceNET 3 ---> CreateInterface [%d]\n",CreateInterface);
+            printf("IceNET ---> CreateInterface [%d]\n",CreateInterface);
         }
-
-        // bzero(buffer, MAX);
-        
-        // i = 0;
-        
-        // while ((buffer[i++] = getchar()) != '\n')
-        // {
-        //     // While Loop until ---> \n in this case
-        //     // This can be anything
-        // }
-   
-        // write(connection, buffer, sizeof(buffer));
 
         if(strncmp("read", buffer, 4) == 0)
         {
@@ -64,6 +53,8 @@ void ProtocolTCP(int connection)
 
         if(strncmp("exit", buffer, 4) == 0) 
         {
+            DeleteDmaTable();
+            DeleteServerTable();
             DeleteDatabase();
 
             printf("Server Exit...\n");
@@ -89,7 +80,7 @@ int InitTCPServer(void)
     }
     else
     {
-        printf("Socket successfully created..\n");
+        printf("IceNET ---> Socket successfully created..\n");
     }
     
     bzero(&ServerAddress, sizeof(ServerAddress));
@@ -106,7 +97,7 @@ int InitTCPServer(void)
         exit(0);
     }
     else
-        printf("Socket successfully binded..\n");
+        printf("IceNET ---> Socket successfully binded..\n");
    
     // Now server is ready to listen and verification
     if ((listen(ServerSocket, 5)) != 0) 
@@ -116,7 +107,8 @@ int InitTCPServer(void)
     }
     else
     {
-        printf("Server listening..\n");
+        printf("IceNET ---> Server listening..\n");
+        ServerConnected = 1;
     }
     
     length = sizeof(ClientAddress);
@@ -125,12 +117,13 @@ int InitTCPServer(void)
     connection = accept(ServerSocket, (SA*)&ClientAddress, &length);
     if (connection < 0) 
     {
-        printf("server accept failed...\n");
+        printf("IceNET ---> Server accept failed...\n");
         exit(0);
     }
     else
     {
-        printf("server accept the client...\n");
+        printf("IceNET ---> Server accept the client...\n");
+        CreateDmaTable();
     }
    
     // Function for chatting between client and server
@@ -138,6 +131,8 @@ int InitTCPServer(void)
    
     // After chatting close the socket
     close(ServerSocket);
+
+    ServerConnected = 0;
 
     return 0;
 }

@@ -44,6 +44,54 @@ int InitMySQL(void)
 	return EXIT_SUCCESS;
 }
 
+int CreateServerTable(void)
+{
+	char buffer[256];
+	sprintf(buffer,"CREATE TABLE 35670400_icenet.DmaServer 	( id INT(11) NOT NULL AUTO_INCREMENT , client  INT(11) NOT NULL , PRIMARY KEY (id)) ENGINE = InnoDB");
+
+	cout << "IceNET ---> Create Server Table " << endl;
+
+	stmt->execute(buffer);
+
+	return EXIT_SUCCESS;
+}
+
+int DeleteServerTable(void)
+{
+	char buffer[256];
+	sprintf(buffer,"DROP TABLE DmaServer");
+
+	cout << "IceNET ---> Delete Server Table " << endl;
+
+	stmt->execute(buffer);
+
+	return EXIT_SUCCESS;
+}
+
+int CreateDmaTable(void)
+{
+	char buffer[256];
+	sprintf(buffer,"CREATE TABLE 35670400_icenet.dma  		( id INT(11) NOT NULL AUTO_INCREMENT , address INT(11) NOT NULL , data INT(11) NOT NULL , length INT(11) NOT NULL , PRIMARY KEY (id)) ENGINE = InnoDB");
+
+	cout << "IceNET ---> Create Dma Table " << endl;
+
+	stmt->execute(buffer);
+
+	return EXIT_SUCCESS;
+}
+
+int DeleteDmaTable(void)
+{
+	char buffer[256];
+	sprintf(buffer,"DROP TABLE dma");
+
+	cout << "IceNET ---> Delete Dma Table " << endl;
+
+	stmt->execute(buffer);
+
+	return EXIT_SUCCESS;
+}
+
 int ReadDmaTable(void)
 {
 	res = stmt->executeQuery("SELECT * FROM dma");

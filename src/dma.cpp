@@ -108,6 +108,12 @@ void* DmaMySQLThread(void* args)
     sem_wait(&DmaMySQLSemaphore);
 
     InitMySQL();
+    while(!ServerConnected)
+    {
+        
+    }
+
+    CreateServerTable();
 
     return 0;
 }

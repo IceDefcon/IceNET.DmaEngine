@@ -1,8 +1,4 @@
-# IceNET.DmaEngine
-
-This is the mathematical model of the DMA Engine
-
-The target model is a parallelepiped volume enclosed in dimentional spheres
+# IceNET.DmaEngine ---> Mathematical model of parallelepiped volume enclosed in dimentional sphere
 
 It is still under development
 
@@ -18,92 +14,5 @@ Whenever C/C++ function is executed ---> Arguments of that function are stored i
 In order to connect to the TCP server and talk to SQL database a TCP client is required 
 
 IP Address mus be change to Server Address
-
-TCP Client and pthreads on the Server side will be terminated when "exit" command is send
-
-	#include <netdb.h>
-	#include <stdio.h>
-	#include <stdlib.h>
-	#include <string.h>
-	#include <sys/socket.h>
-	#include <unistd.h> 
-	#include <arpa/inet.h>
-
-	#include "clientTCP.h"
-
-	#define TCP_BUFFER_SIZE 80
-	#define PORT 8080
-	#define SA struct sockaddr
-
-	void communication(int sockfd)
-	{
-	    char buffer[TCP_BUFFER_SIZE];
-	    int n;
-
-	    for (;;) {
-	        bzero(buffer, sizeof(buffer));
-	        printf("Server Command : ");
-	        n = 0;
-	        while ((buffer[n++] = getchar()) != '\n')
-	        {
-	            // While Loop until ---> \n in this case
-	            // This can be anything
-	        }
-
-	        write(sockfd, buffer, sizeof(buffer));
-	        // bzero(buffer, sizeof(buffer));
-	        // read(sockfd, buffer, sizeof(buffer));
-	        // printf("Server Command :: %s", buffer);
-	        if ((strncmp(buffer, "exit", 4)) == 0) {
-	            printf("Client Exit...\n");
-	            break;
-	        }
-	    }
-	}
-	   
-	int main()
-	{
-	    int ClientSocket;
-	    struct sockaddr_in ServerAddress;
-	   
-	    // ClientSocket create and verification
-	    ClientSocket = socket(AF_INET, SOCK_STREAM, 0);
-	    
-	    if (ClientSocket == -1) 
-	    {
-	        printf("ClientSocket creation failed...\n");
-	        exit(0);
-	    }
-	    else
-	    {
-	        printf("ClientSocket successfully created..\n");
-	    }
-	    
-	    bzero(&ServerAddress, sizeof(ServerAddress));
-	   
-	    // assign IP, PORT
-	    ServerAddress.sin_family = AF_INET;
-	    ServerAddress.sin_addr.s_addr = inet_addr("192.168.0.104");
-	    ServerAddress.sin_port = htons(PORT);
-	   
-	    // connect the client ClientSocket to server ClientSocket
-	    if (connect(ClientSocket, (SA*)&ServerAddress, sizeof(ServerAddress)) != 0) {
-	        printf("connection with the server failed...\n");
-	        exit(0);
-	    }
-	    else
-	    {
-	        printf("connected to the server..\n");
-	    }
-	   
-	    // function for chat
-	    communication(ClientSocket);
-	   
-	    // close the ClientSocket
-	    close(ClientSocket);
-	}
-
-
-
 
 # ICE

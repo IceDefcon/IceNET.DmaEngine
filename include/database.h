@@ -3,6 +3,13 @@
 
 
 int InitMySQL(void);
+
+int CreateServerTable(void);
+int DeleteServerTable(void);
+
+int CreateDmaTable(void);
+int DeleteDmaTable(void);
+
 int ReadDmaTable(void);
 int ReadLastId(void);
 int InsertIntoDmaTable(void);

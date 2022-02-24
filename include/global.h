@@ -3,6 +3,7 @@
 
 
 extern int CreateInterface;
+extern int ServerConnected;
 extern int DestroyInterface;
 extern int DmaInterfaceTerminate;
 
