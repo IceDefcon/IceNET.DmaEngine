@@ -7,14 +7,17 @@
 #include <cppconn/resultset.h>
 #include <cppconn/statement.h>
 
+#include "database.h"
+
 using namespace std;
 
-		sql::Driver *driver;
-		sql::Connection *con;
-		sql::Statement *stmt;
-		sql::ResultSet *res;
+	sql::Driver *driver;
+	sql::Connection *con;
+	sql::Statement *stmt;
+	sql::ResultSet *res;
 
-int InitMySQL(void)
+
+int MySQL::InitMySQL(void)
 {
 	cout << endl;
 
@@ -44,7 +47,7 @@ int InitMySQL(void)
 	return EXIT_SUCCESS;
 }
 
-int CreateServerTable(void)
+int MySQL::CreateServerTable(void)
 {
 	char buffer[256];
 	sprintf(buffer,"CREATE TABLE 35670400_icenet.DmaServer 	( id INT(11) NOT NULL AUTO_INCREMENT , client  INT(11) NOT NULL , PRIMARY KEY (id)) ENGINE = InnoDB");
@@ -56,7 +59,7 @@ int CreateServerTable(void)
 	return EXIT_SUCCESS;
 }
 
-int DeleteServerTable(void)
+int MySQL::DeleteServerTable(void)
 {
 	char buffer[256];
 	sprintf(buffer,"DROP TABLE DmaServer");
@@ -68,7 +71,7 @@ int DeleteServerTable(void)
 	return EXIT_SUCCESS;
 }
 
-int CreateDmaTable(void)
+int MySQL::CreateDmaTable(void)
 {
 	char buffer[256];
 	sprintf(buffer,"CREATE TABLE 35670400_icenet.dma  		( id INT(11) NOT NULL AUTO_INCREMENT , address INT(11) NOT NULL , data INT(11) NOT NULL , length INT(11) NOT NULL , PRIMARY KEY (id)) ENGINE = InnoDB");
@@ -80,7 +83,7 @@ int CreateDmaTable(void)
 	return EXIT_SUCCESS;
 }
 
-int DeleteDmaTable(void)
+int MySQL::DeleteDmaTable(void)
 {
 	char buffer[256];
 	sprintf(buffer,"DROP TABLE dma");
@@ -92,7 +95,7 @@ int DeleteDmaTable(void)
 	return EXIT_SUCCESS;
 }
 
-int ReadDmaTable(void)
+int MySQL::ReadDmaTable(void)
 {
 	res = stmt->executeQuery("SELECT * FROM dma");
 	while (res->next()) 
@@ -106,7 +109,7 @@ int ReadDmaTable(void)
 	return EXIT_SUCCESS;
 }
 
-int ReadLastId(void)
+int MySQL::ReadLastId(void)
 {
 	int ret;
 	res = stmt->executeQuery("SELECT MAX(id) FROM dma");
@@ -120,7 +123,7 @@ int ReadLastId(void)
 	return ret;
 }
 
-int InsertIntoDmaTable(void)
+int MySQL::InsertIntoDmaTable(void)
 {	
 	char buffer[256];
 	sprintf(buffer,"INSERT INTO dma (id, address, data, length) VALUES (NULL, '3355', '7766', '1')");
@@ -131,7 +134,7 @@ int InsertIntoDmaTable(void)
 	return EXIT_SUCCESS;
 }
 
-int DeleteFormDmaTable(void)
+int MySQL::DeleteFormDmaTable(void)
 {
 	char buffer[256];
 	sprintf(buffer,"DELETE FROM dma WHERE dma.id = %d",ReadLastId());
@@ -142,7 +145,7 @@ int DeleteFormDmaTable(void)
 	return EXIT_SUCCESS;
 }
 
-int DeleteDatabase(void)
+int MySQL::DeleteDatabase(void)
 {
 	delete res;
 	delete stmt;

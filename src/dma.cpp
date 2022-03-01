@@ -105,15 +105,18 @@ void* DmaInterfaceThread(void* args)
 
 void* DmaMySQLThread(void* args)
 {
+    MySQL Dma;
+
     sem_wait(&DmaMySQLSemaphore);
 
-    InitMySQL();
+    Dma.InitMySQL();
+
     while(!ServerConnected)
     {
         
     }
 
-    CreateServerTable();
+    Dma.CreateServerTable();
 
     return 0;
 }

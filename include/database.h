@@ -1,20 +1,23 @@
 #ifndef DATABASE_H
 #define DATABASE_H
 
+class MySQL {
 
-int InitMySQL(void);
+	public:
+		virtual int InitMySQL(void);
 
-int CreateServerTable(void);
-int DeleteServerTable(void);
+		virtual int CreateServerTable(void);
+		virtual int DeleteServerTable(void);
 
-int CreateDmaTable(void);
-int DeleteDmaTable(void);
+		virtual int CreateDmaTable(void);
+		virtual int DeleteDmaTable(void);
 
-int ReadDmaTable(void);
-int ReadLastId(void);
-int InsertIntoDmaTable(void);
-int DeleteFormDmaTable(void);
-int DeleteDatabase(void);
+		virtual int ReadDmaTable(void);
+		virtual int ReadLastId(void);
+		virtual int InsertIntoDmaTable(void);
+		virtual int DeleteFormDmaTable(void);
+		virtual int DeleteDatabase(void);
 
+};
 
 #endif /* DATABASE_H */

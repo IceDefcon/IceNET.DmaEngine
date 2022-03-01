@@ -21,6 +21,8 @@
 
 void ProtocolTCP(int connection)
 {
+    MySQL TableOperator;
+
     char buffer[MAX];
     int i;
 
@@ -38,30 +40,30 @@ void ProtocolTCP(int connection)
 
         if(strncmp("read", buffer, 4) == 0)
         {
-            ReadDmaTable();
+            TableOperator.ReadDmaTable();
         }   
 
         if(strncmp("add", buffer, 3) == 0)
         {
-            InsertIntoDmaTable();
+            TableOperator.InsertIntoDmaTable();
         }
 
         if(strncmp("del", buffer, 3) == 0)
         {
-            DeleteFormDmaTable();
+            TableOperator.DeleteFormDmaTable();
         }
 
         if(strncmp("exit", buffer, 4) == 0)
         {
-            DeleteDmaTable();
+            TableOperator.DeleteDmaTable();
             break;
         }
 
         if(strncmp("terminate", buffer, 9) == 0) 
         {
-            DeleteDmaTable();
-            DeleteServerTable();
-            DeleteDatabase();
+            TableOperator.DeleteDmaTable();
+            TableOperator.DeleteServerTable();
+            TableOperator.DeleteDatabase();
 
             printf("IceNET ---> Server Exit \n");
             DmaInterfaceTerminate = 1;
@@ -72,6 +74,8 @@ void ProtocolTCP(int connection)
    
 int InitTCPServer(void)
 {
+    MySQL TableOperator;
+
     int ServerSocket;
     int connection;
     socklen_t length;
@@ -131,7 +135,7 @@ int InitTCPServer(void)
     else
     {
         printf("IceNET ---> Server accept the client...\n");
-        CreateDmaTable();
+        TableOperator.CreateDmaTable();
     }
    
     // Function for chatting between client and server
