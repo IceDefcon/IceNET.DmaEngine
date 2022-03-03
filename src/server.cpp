@@ -115,7 +115,6 @@ int InitTCPServer(void)
     else
     {
         printf("IceNET ---> Server listening..\n");
-        ServerConnected = 1;
     }
     
     length = sizeof(ClientAddress);
@@ -142,7 +141,6 @@ int InitTCPServer(void)
     // After chatting close the socket
     close(ServerSocket);
 
-    ServerConnected = 0;
 
     return 0;
 }

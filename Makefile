@@ -11,7 +11,6 @@ SRCS=\
     src/dma.cpp \
     src/timer.cpp \
     src/server.cpp \
-    src/global.cpp \
     src/database.cpp \
 
 SRCS_ASM=\

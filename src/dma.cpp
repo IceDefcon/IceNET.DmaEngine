@@ -79,7 +79,7 @@ void* DmaMySQLThread(void* args)
 
     Dma.InitMySQL();
 
-    while(!ServerConnected)
+    while(true)
     {
         
     }
