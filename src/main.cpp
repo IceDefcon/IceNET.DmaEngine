@@ -8,9 +8,9 @@ int main(int argc, char* argv[])
 
     InitGlobals();
 
-    InitDma();
+    //InitDma();
 
-    TerminateDma();
+    //TerminateDma();
 
     return 0;
 }

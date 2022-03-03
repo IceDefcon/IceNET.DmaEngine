@@ -12,12 +12,15 @@
 #include "global.h"
 #include "database.h"
 
+
+
 #define MAX 80
 #define PORT 8080
 #define MAXLINE 1024
 
 #define SA struct sockaddr
 
+int ServerTerminate = 0;
 
 void ProtocolTCP(int connection)
 {
@@ -31,12 +34,6 @@ void ProtocolTCP(int connection)
         bzero(buffer, MAX);
    
         read(connection, buffer, sizeof(buffer));
-
-        if (strncmp("set", buffer, 3) == 0) 
-        {
-            CreateInterface = 1;
-            printf("IceNET ---> CreateInterface [%d]\n",CreateInterface);
-        }
 
         if(strncmp("read", buffer, 4) == 0)
         {
@@ -66,7 +63,7 @@ void ProtocolTCP(int connection)
             TableOperator.DeleteDatabase();
 
             printf("IceNET ---> Server Exit \n");
-            DmaInterfaceTerminate = 1;
+            ServerTerminate = 1;
             break;
         }
     }
@@ -140,7 +137,7 @@ int InitTCPServer(void)
    
     // Function for chatting between client and server
     ProtocolTCP(connection);
-    if(DmaInterfaceTerminate == 0) goto NextClient;
+    if(ServerTerminate == 0) goto NextClient;
 
     // After chatting close the socket
     close(ServerSocket);
