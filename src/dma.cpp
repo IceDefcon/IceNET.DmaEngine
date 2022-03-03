@@ -6,7 +6,6 @@
 #include "timer.h"
 #include "server.h"
 #include "dma.h"
-#include "global.h"
 #include "interface.h"
 #include "database.h"
 #include "semaphores.h"
@@ -78,11 +77,6 @@ void* DmaMySQLThread(void* args)
     sem_wait(&DmaMySQLSemaphore);
 
     Dma.InitMySQL();
-
-    while(true)
-    {
-        
-    }
 
     Dma.CreateServerTable();
 

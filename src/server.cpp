@@ -9,7 +9,6 @@
 #include <arpa/inet.h>
 
 #include "timer.h"
-#include "global.h"
 #include "database.h"
 
 

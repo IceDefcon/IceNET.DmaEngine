@@ -1,14 +1,16 @@
 #include <iostream>     // system
+
 #include "dma.h"
-#include "global.h"
+
+
 
 int main(int argc, char* argv[]) 
 {
     system("clear");
 
-    //InitDma();
+    InitDma();
 
-    //TerminateDma();
+    TerminateDma();
 
     return 0;
 }
