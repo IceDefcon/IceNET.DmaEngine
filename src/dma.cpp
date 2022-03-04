@@ -6,10 +6,10 @@
 #include "timer.h"
 #include "server.h"
 #include "dma.h"
-#include "interface.h"
 #include "database.h"
 #include "semaphores.h"
 
+using namespace std;
 
 #define BUFFER_SIZE 128
 
