@@ -12,6 +12,7 @@ SRCS=\
     src/timer.cpp \
     src/server.cpp \
     src/database.cpp \
+    src/ioctl.cpp \
 
 SRCS_ASM=\
 	src/link.asm \

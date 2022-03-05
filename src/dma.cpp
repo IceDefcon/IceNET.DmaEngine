@@ -23,12 +23,9 @@ using namespace std;
 _Atomic(int) source[BUFFER_SIZE];
 _Atomic(int) dest[BUFFER_SIZE];
 
-
-
 // Thread Id
 pthread_t DmaSwitch;
 pthread_t DmaServer;
-pthread_t DmaInterface;
 pthread_t DmaMySQL;
 
 void* DmaSwitchThread(void* args)

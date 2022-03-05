@@ -1,16 +1,17 @@
 #include <iostream>     // system
 
 #include "dma.h"
-
+#include "server.h"
 
 
 int main(int argc, char* argv[]) 
 {
     system("clear");
 
-    InitDma();
+    InitTCPServer();
+    // InitDma();
 
-    TerminateDma();
+    // TerminateDma();
 
     return 0;
 }

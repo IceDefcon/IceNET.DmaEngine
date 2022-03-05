@@ -8,18 +8,32 @@
 #include <unistd.h>
 #include <arpa/inet.h>
 
+#include <iostream>
+
 #include "timer.h"
 #include "database.h"
+#include "ioctl.h"
 
+using namespace std;
 
+int Message(int connection)
+{
+    MySQL TableOperator;
 
-#define MAX 80
-#define PORT 8080
-#define MAXLINE 1024
+    char buffer[MAX];
+    int i;
 
-#define SA struct sockaddr
+    bzero(buffer, MAX);
+   
+    cout << "Just before read command" << endl;
+    read(connection, buffer, sizeof(buffer));
 
-int ServerTerminate = 0;
+    cout << "Returned ---> " << buffer << endl;
+
+    //Ice_Ioctl(NULL,0,0);
+
+    return EXIT_SUCCESS;
+}
 
 void ProtocolTCP(int connection)
 {
@@ -130,17 +144,17 @@ int InitTCPServer(void)
     else
     {
         printf("IceNET ---> Server accept the client...\n");
-        TableOperator.CreateDmaTable();
+        //TableOperator.CreateDmaTable();   <<<----- This is required for the SQL database connection !
     }
    
     // Function for chatting between client and server
-    ProtocolTCP(connection);
-    if(ServerTerminate == 0) goto NextClient;
+    //ProtocolTCP(connection);
+    //if(ServerTerminate == 0) goto NextClient;
 
     // After chatting close the socket
-    close(ServerSocket);
+    //close(ServerSocket);
 
+    Message(connection);
 
     return 0;
 }
-
