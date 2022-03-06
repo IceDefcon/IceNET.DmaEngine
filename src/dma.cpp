@@ -11,18 +11,6 @@
 
 using namespace std;
 
-#define BUFFER_SIZE 128
-
-#ifndef __cplusplus
-# include <stdatomic.h>
-#else
-# include <atomic>
-# define _Atomic(X) std::atomic< X >
-#endif
-
-_Atomic(int) source[BUFFER_SIZE];
-_Atomic(int) dest[BUFFER_SIZE];
-
 // Thread Id
 pthread_t DmaSwitch;
 pthread_t DmaServer;
@@ -32,9 +20,6 @@ void* DmaSwitchThread(void* args)
 {
     sem_wait(&DmaSwitchSemaphore);
     cout << "IceNET ---> Dma Switch Thread" << endl;
-
-    memset(source, 0, sizeof(source));
-    memset(dest, 0, sizeof(dest));
 
     printf("\n");
     dma_engine  Dma_0;

@@ -14,26 +14,40 @@
 #include "database.h"
 #include "ioctl.h"
 
+#ifndef __cplusplus
+# include <stdatomic.h>
+#else
+# include <atomic>
+# define _Atomic(X) std::atomic< X >
+#endif
+
 #define MAX_COMMAND 256
+
+_Atomic(int) rx[MAX_COMMAND];
+_Atomic(int) tx[MAX_COMMAND];
 
 #define PORT 8080
 #define MAXLINE 1024
 
 #define SA struct sockaddr
 
-int ServerTerminate = 0;
-
 using namespace std;
+
+void InitAtomics(void)
+{
+    memset(rx, 0, sizeof(rx));
+    memset(tx, 0, sizeof(tx));
+}
 
 int GetCommand(int descriptor)
 {
-    int ServerCommand[MAX_COMMAND];
-    bzero(ServerCommand, sizeof(ServerCommand));
+    int rx[MAX_COMMAND];
+    bzero(rx, sizeof(rx));
     
-    cout << "IceNET ---> Sending Server Command" << endl;   
-    read(descriptor, ServerCommand, sizeof(ServerCommand));
+    cout << "IceNET ---> Receiving Server Command" << endl;   
+    read(descriptor, rx, sizeof(rx));
 
-    return ServerCommand[0];
+    return rx[0];
 }
 
 // void ProcessCommand(char* msg)
@@ -75,6 +89,8 @@ int GetCommand(int descriptor)
    
 int InitTCPServer(void)
 {
+    InitAtomics();
+
     MySQL TableOperator;
 
     int ServerSocket;
@@ -106,7 +122,7 @@ int InitTCPServer(void)
     // Binding newly created socket to given IP and verification
     if ((bind(ServerSocket, (SA*)&ServerAddress, sizeof(ServerAddress))) != 0) 
     {
-        cout << "IceNET ---> Socket bind failed..." << endl;
+        cout << "IceNET ---> Socket bind failed" << endl;
         exit(0);
     }
     else
@@ -115,12 +131,12 @@ int InitTCPServer(void)
     // Now server is ready to listen and verification
     if ((listen(ServerSocket, 5)) != 0) 
     {
-        cout << "IceNET ---> Listen failed..." << endl;
+        cout << "IceNET ---> Server Listen failed" << endl;
         exit(0);
     }
     else
     {
-        cout << "IceNET ---> Server listening.." << endl;
+        cout << "IceNET ---> Server successfully listening" << endl;
     }
     
     length = sizeof(ClientAddress);
@@ -131,7 +147,7 @@ int InitTCPServer(void)
     ClientDescriptor = accept(ServerSocket, (SA*)&ClientAddress, &length);
     if (ClientDescriptor < 0) 
     {
-        cout << "IceNET ---> Server accept failed..." << endl;
+        cout << "IceNET ---> Server accept failed" << endl;
         exit(0);
     }
     else
@@ -139,13 +155,16 @@ int InitTCPServer(void)
         cout << "IceNET ---> Server accept the New client" << endl;
     }
 
+    NextCommand:
+
     int message = GetCommand(ClientDescriptor);
 
-    cout << "Returned ---> " << message << endl;
+    cout << "IceNET ---> Command: " << message << endl;
 
     // ProcessCommand(message);
 
-    goto NextClient;
+    // goto NextCommand;
+    // goto NextClient;
 
     close(ServerSocket);
 
