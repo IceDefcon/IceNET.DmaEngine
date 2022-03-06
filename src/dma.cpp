@@ -73,9 +73,9 @@ void* DmaMySQLThread(void* args)
 
     sem_wait(&DmaMySQLSemaphore);
 
-    Dma.InitMySQL();
+    //Dma.InitMySQL();
 
-    Dma.CreateServerTable();
+    //Dma.CreateServerTable();
 
     return 0;
 }

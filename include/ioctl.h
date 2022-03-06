@@ -2,6 +2,10 @@
 #define IOCTL_H
 
 
+
+#define ICE_IOCTL_0     0
+#define ICE_IOCTL_1     1
+
 typedef struct
 {
     unsigned int x;
@@ -12,9 +16,6 @@ typedef struct
 {
     long (*ioctl) (ComplexData *pData, unsigned int cmd, unsigned long arg);
 }   API;
-
-#define ICE_IOCTL_0     0
-#define ICE_IOCTL_1     1
 
 static long Ice_Ioctl(ComplexData *pData, unsigned int cmd, unsigned long arg);
 

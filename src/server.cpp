@@ -14,93 +14,86 @@
 #include "database.h"
 #include "ioctl.h"
 
+#define MAX_COMMAND 256
+
+#define PORT 8080
+#define MAXLINE 1024
+
+#define SA struct sockaddr
+
+int ServerTerminate = 0;
+
 using namespace std;
 
-int Message(int connection)
+int GetCommand(int descriptor)
 {
-    MySQL TableOperator;
+    int ServerCommand[MAX_COMMAND];
+    bzero(ServerCommand, sizeof(ServerCommand));
+    
+    cout << "IceNET ---> Sending Server Command" << endl;   
+    read(descriptor, ServerCommand, sizeof(ServerCommand));
 
-    char buffer[MAX];
-    int i;
-
-    bzero(buffer, MAX);
-   
-    cout << "Just before read command" << endl;
-    read(connection, buffer, sizeof(buffer));
-
-    cout << "Returned ---> " << buffer << endl;
-
-    //Ice_Ioctl(NULL,0,0);
-
-    return EXIT_SUCCESS;
+    return ServerCommand[0];
 }
 
-void ProtocolTCP(int connection)
-{
-    MySQL TableOperator;
+// void ProcessCommand(char* msg)
+// {
+//     MySQL TableOperator;
 
-    char buffer[MAX];
-    int i;
+//     cout << "Inside ---> " << msg << endl;
 
-    while(true) 
-    {
-        bzero(buffer, MAX);
-   
-        read(connection, buffer, sizeof(buffer));
+//     if(strncmp("read", msg, 4) == 0)
+//     {
+//         TableOperator.ReadDmaTable();
+//     }   
 
-        if(strncmp("read", buffer, 4) == 0)
-        {
-            TableOperator.ReadDmaTable();
-        }   
+//     if(strncmp("add", msg, 3) == 0)
+//     {
+//         TableOperator.InsertIntoDmaTable();
+//     }
 
-        if(strncmp("add", buffer, 3) == 0)
-        {
-            TableOperator.InsertIntoDmaTable();
-        }
+//     if(strncmp("del", msg, 3) == 0)
+//     {
+//         TableOperator.DeleteFormDmaTable();
+//     }
 
-        if(strncmp("del", buffer, 3) == 0)
-        {
-            TableOperator.DeleteFormDmaTable();
-        }
+//     if(strncmp("exit", msg, 4) == 0)
+//     {
+//         TableOperator.DeleteDmaTable();
+//     }
 
-        if(strncmp("exit", buffer, 4) == 0)
-        {
-            TableOperator.DeleteDmaTable();
-            break;
-        }
+//     if(strncmp("kill", msg, 4) == 0) 
+//     {
+//         TableOperator.DeleteDmaTable();
+//         TableOperator.DeleteServerTable();
+//         TableOperator.DeleteDatabase();
 
-        if(strncmp("terminate", buffer, 9) == 0) 
-        {
-            TableOperator.DeleteDmaTable();
-            TableOperator.DeleteServerTable();
-            TableOperator.DeleteDatabase();
-
-            printf("IceNET ---> Server Exit \n");
-            ServerTerminate = 1;
-            break;
-        }
-    }
-}
+//         cout << "IceNET ---> Server Exit" << endl;
+//         ServerTerminate = 1;
+//     }
+// }
    
 int InitTCPServer(void)
 {
     MySQL TableOperator;
 
     int ServerSocket;
-    int connection;
+    int ClientDescriptor;
+
     socklen_t length;
+
     struct sockaddr_in ServerAddress;
     struct sockaddr_in ClientAddress;
    
     ServerSocket = socket(AF_INET, SOCK_STREAM, 0);
     if (ServerSocket == -1) 
     {
-        printf("socket creation failed...\n");
+        cout << "IceNET ---> Socket creation failed..." << endl;
         exit(0);
     }
     else
     {
-        printf("IceNET ---> Socket successfully created..\n");
+        cout << "IceNET ---> Socket successfully created.." << endl;
     }
     
     bzero(&ServerAddress, sizeof(ServerAddress));
@@ -113,21 +106,21 @@ int InitTCPServer(void)
     // Binding newly created socket to given IP and verification
     if ((bind(ServerSocket, (SA*)&ServerAddress, sizeof(ServerAddress))) != 0) 
     {
-        printf("socket bind failed...\n");
+        cout << "IceNET ---> Socket bind failed..." << endl;
         exit(0);
     }
     else
-        printf("IceNET ---> Socket successfully binded..\n");
+        cout << "IceNET ---> Socket successfully binded.." << endl;
    
     // Now server is ready to listen and verification
     if ((listen(ServerSocket, 5)) != 0) 
     {
-        printf("Listen failed...\n");
+        cout << "IceNET ---> Listen failed..." << endl;
         exit(0);
     }
     else
     {
-        printf("IceNET ---> Server listening..\n");
+        cout << "IceNET ---> Server listening.." << endl;
     }
     
     length = sizeof(ClientAddress);
@@ -135,26 +128,26 @@ int InitTCPServer(void)
     NextClient:
 
     // Accept the data packet from client and verification
-    connection = accept(ServerSocket, (SA*)&ClientAddress, &length);
-    if (connection < 0) 
+    ClientDescriptor = accept(ServerSocket, (SA*)&ClientAddress, &length);
+    if (ClientDescriptor < 0) 
     {
-        printf("IceNET ---> Server accept failed...\n");
+        cout << "IceNET ---> Server accept failed..." << endl;
         exit(0);
     }
     else
     {
-        printf("IceNET ---> Server accept the client...\n");
-        //TableOperator.CreateDmaTable();   <<<----- This is required for the SQL database connection !
+        cout << "IceNET ---> Server accept the New client" << endl;
     }
-   
-    // Function for chatting between client and server
-    //ProtocolTCP(connection);
-    //if(ServerTerminate == 0) goto NextClient;
 
-    // After chatting close the socket
-    //close(ServerSocket);
+    int message = GetCommand(ClientDescriptor);
 
-    Message(connection);
+    cout << "Returned ---> " << message << endl;
+
+    // ProcessCommand(message);
+
+    goto NextClient;
+
+    close(ServerSocket);
 
     return 0;
 }

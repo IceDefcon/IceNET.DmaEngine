@@ -4,14 +4,14 @@
 #include "server.h"
 
 
+
 int main(int argc, char* argv[]) 
 {
     system("clear");
 
-    InitTCPServer();
-    // InitDma();
+    InitDma();
 
-    // TerminateDma();
+    TerminateDma();
 
     return 0;
 }
