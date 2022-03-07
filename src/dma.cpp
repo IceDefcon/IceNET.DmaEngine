@@ -1,5 +1,7 @@
+//
+//
+//
 #include <iostream>     // system
-#include <cstring>      // memcpy
 #include <semaphore.h>
 
 #include "dump.h"
@@ -7,11 +9,16 @@
 #include "server.h"
 #include "dma.h"
 #include "database.h"
-#include "semaphores.h"
+#include "server.h"
 
 using namespace std;
 
-// Thread Id
+// Semaphores
+sem_t DmaSwitchSemaphore; 
+sem_t DmaServerSemaphore; 
+sem_t DmaMySQLSemaphore;
+
+// Threads
 pthread_t DmaSwitch;
 pthread_t DmaServer;
 pthread_t DmaMySQL;
@@ -45,7 +52,9 @@ void* DmaServerThread(void* args)
     sem_wait(&DmaServerSemaphore);
     cout << "IceNET ---> Dma Server Thread" << endl;
 
-    InitTCPServer();
+    Server Instance;
+
+    Instance.InitServer();
 
     delay(100); // For the Tcp Server to terminate
 

@@ -1,107 +1,98 @@
-#include <stdio.h>
-#include <netdb.h>
-#include <netinet/in.h>
-#include <stdlib.h>
+//
+//
+//
 #include <string.h>
-#include <sys/socket.h>
-#include <sys/types.h>
 #include <unistd.h>
-#include <arpa/inet.h>
-
 #include <iostream>
 
 #include "timer.h"
 #include "database.h"
 #include "ioctl.h"
-
-#ifndef __cplusplus
-# include <stdatomic.h>
-#else
-# include <atomic>
-# define _Atomic(X) std::atomic< X >
-#endif
-
-#define MAX_COMMAND 256
-
-_Atomic(int) rx[MAX_COMMAND];
-_Atomic(int) tx[MAX_COMMAND];
-
-#define PORT 8080
-#define MAXLINE 1024
-
-#define SA struct sockaddr
+#include "server.h"
 
 using namespace std;
 
-void InitAtomics(void)
+Server::Server()
 {
     memset(rx, 0, sizeof(rx));
     memset(tx, 0, sizeof(tx));
+
+    ServerSocket = 0;
+    ClientDescriptor = 0;
+
+    AddressLength = 0;
+
+    ServerAddress.sin_family = 0;       // Address family: AF_INET
+    ServerAddress.sin_port = 0;         // Port in network byte order
+    ServerAddress.sin_addr.s_addr = 0;  // Internet address ---> Address in network byte order
+
+    ClientAddress.sin_family = 0;
+    ClientAddress.sin_port = 0;
+    ClientAddress.sin_addr.s_addr = 0;
 }
 
-int GetCommand(int descriptor)
+Server::~Server()
 {
-    int rx[MAX_COMMAND];
+
+}
+
+void Server::GetCommand(int descriptor)
+{
     bzero(rx, sizeof(rx));
     
     cout << "IceNET ---> Receiving Server Command" << endl;   
     read(descriptor, rx, sizeof(rx));
 
-    return rx[0];
+    cout << "IceNET ---> Code Word 0: " << hex << rx[0] << endl;
+    cout << "IceNET ---> Code Word 1: " << hex << rx[1] << endl;
+    cout << "IceNET ---> Code Word 2: " << hex << rx[2] << endl;
+    cout << "IceNET ---> Code Word 3: " << hex << rx[3] << endl;
+
 }
 
-// void ProcessCommand(char* msg)
-// {
-//     MySQL TableOperator;
-
-//     cout << "Inside ---> " << msg << endl;
-
-//     if(strncmp("read", msg, 4) == 0)
-//     {
-//         TableOperator.ReadDmaTable();
-//     }   
-
-//     if(strncmp("add", msg, 3) == 0)
-//     {
-//         TableOperator.InsertIntoDmaTable();
-//     }
-
-//     if(strncmp("del", msg, 3) == 0)
-//     {
-//         TableOperator.DeleteFormDmaTable();
-//     }
-
-//     if(strncmp("exit", msg, 4) == 0)
-//     {
-//         TableOperator.DeleteDmaTable();
-//     }
-
-//     if(strncmp("kill", msg, 4) == 0) 
-//     {
-//         TableOperator.DeleteDmaTable();
-//         TableOperator.DeleteServerTable();
-//         TableOperator.DeleteDatabase();
-
-//         cout << "IceNET ---> Server Exit" << endl;
-//         ServerTerminate = 1;
-//     }
-// }
-   
-int InitTCPServer(void)
+void Server::ProcessCommand(long long int** cmd)
 {
-    InitAtomics();
+    // MySQL TableOperator;
 
-    MySQL TableOperator;
+    cout << "Inside ---> " << *cmd << endl;
+    cout << "Inside ---> " << *(cmd+1) << endl <<endl;
 
-    int ServerSocket;
-    int ClientDescriptor;
+    // if(strncmp("read", cmd, 4) == 0)
+    // {
+    //     TableOperator.ReadDmaTable();
+    // }   
 
-    socklen_t length;
+    // if(strncmp("add", cmd, 3) == 0)
+    // {
+    //     TableOperator.InsertIntoDmaTable();
+    // }
 
-    struct sockaddr_in ServerAddress;
-    struct sockaddr_in ClientAddress;
+    // if(strncmp("del", cmd, 3) == 0)
+    // {
+    //     TableOperator.DeleteFormDmaTable();
+    // }
+
+    // if(strncmp("exit", cmd, 4) == 0)
+    // {
+    //     TableOperator.DeleteDmaTable();
+    // }
+
+    // if(strncmp("kill", cmd, 4) == 0) 
+    // {
+    //     TableOperator.DeleteDmaTable();
+    //     TableOperator.DeleteServerTable();
+    //     TableOperator.DeleteDatabase();
+
+    //     cout << "IceNET ---> Server Exit" << endl;
+    //     ServerTerminate = 1;
+    // }
+}
    
+int Server::InitServer(void)
+{
+
     ServerSocket = socket(AF_INET, SOCK_STREAM, 0);
+
     if (ServerSocket == -1) 
     {
         cout << "IceNET ---> Socket creation failed..." << endl;
@@ -116,8 +107,9 @@ int InitTCPServer(void)
    
     // assign IP, PORT
     ServerAddress.sin_family = AF_INET;
-    ServerAddress.sin_addr.s_addr = htonl(INADDR_ANY);
     ServerAddress.sin_port = htons(PORT);
+    ServerAddress.sin_addr.s_addr = htonl(INADDR_ANY);
+    
    
     // Binding newly created socket to given IP and verification
     if ((bind(ServerSocket, (SA*)&ServerAddress, sizeof(ServerAddress))) != 0) 
@@ -139,12 +131,12 @@ int InitTCPServer(void)
         cout << "IceNET ---> Server successfully listening" << endl;
     }
     
-    length = sizeof(ClientAddress);
+    AddressLength = sizeof(ClientAddress);
    
     NextClient:
 
     // Accept the data packet from client and verification
-    ClientDescriptor = accept(ServerSocket, (SA*)&ClientAddress, &length);
+    ClientDescriptor = accept(ServerSocket, (SA*)&ClientAddress, &AddressLength);
     if (ClientDescriptor < 0) 
     {
         cout << "IceNET ---> Server accept failed" << endl;
@@ -157,11 +149,15 @@ int InitTCPServer(void)
 
     NextCommand:
 
-    int message = GetCommand(ClientDescriptor);
+    GetCommand(ClientDescriptor);
 
-    cout << "IceNET ---> Command: " << message << endl;
+    // cout << "Rx ---> " << RxMessage << endl;
+    // cout << "Rx ---> " << (RxMessage+1) << endl;
+    // cout << "Rx ---> " << (RxMessage+2) << endl;
+    // cout << "Rx ---> " << (RxMessage+3) << endl;
 
-    // ProcessCommand(message);
+    // ProcessCommand(&RxMessage[0]);
+    // ProcessCommand(&RxMessage[1]);
 
     // goto NextCommand;
     // goto NextClient;

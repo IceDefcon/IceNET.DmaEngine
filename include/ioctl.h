@@ -1,8 +1,6 @@
 #ifndef IOCTL_H
 #define IOCTL_H
 
-
-
 #define ICE_IOCTL_0     0
 #define ICE_IOCTL_1     1
 
