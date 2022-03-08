@@ -40,7 +40,7 @@ class Server
 		int InitServer(void);
 
 		void GetCommand(int descriptor);
-		void ProcessCommand(long long int** cmd);
+		void ProcessCommand(void);
 };
 
 

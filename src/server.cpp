@@ -43,19 +43,20 @@ void Server::GetCommand(int descriptor)
     cout << "IceNET ---> Receiving Server Command" << endl;   
     read(descriptor, rx, sizeof(rx));
 
-    cout << "IceNET ---> Code Word 0: " << hex << rx[0] << endl;
-    cout << "IceNET ---> Code Word 1: " << hex << rx[1] << endl;
-    cout << "IceNET ---> Code Word 2: " << hex << rx[2] << endl;
-    cout << "IceNET ---> Code Word 3: " << hex << rx[3] << endl;
+    cout << "IceNET ---> Code Word 0: " << hex << *(rx+0) << endl;
+    cout << "IceNET ---> Code Word 1: " << hex << *(rx+1) << endl;
+    cout << "IceNET ---> Code Word 2: " << hex << *(rx+2) << endl;
+    cout << "IceNET ---> Code Word 3: " << hex << *(rx+3) << endl;
+
 
 }
 
-void Server::ProcessCommand(long long int** cmd)
+void Server::ProcessCommand(void)
 {
     // MySQL TableOperator;
 
-    cout << "Inside ---> " << *cmd << endl;
-    cout << "Inside ---> " << *(cmd+1) << endl <<endl;
+    // cout << "Inside ---> " << *cmd << endl;
+    // cout << "Inside ---> " << *(cmd+1) << endl <<endl;
 
     // if(strncmp("read", cmd, 4) == 0)
     // {
