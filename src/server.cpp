@@ -4,11 +4,15 @@
 #include <string.h>
 #include <unistd.h>
 #include <iostream>
+#include <semaphore.h>
 
 #include "timer.h"
 #include "database.h"
 #include "ioctl.h"
 #include "server.h"
+
+sem_t ServerRxSemaphore; 
+sem_t ServerTxSemaphore; 
 
 using namespace std;
 
@@ -43,16 +47,19 @@ void Server::GetCommand(int descriptor)
     cout << "IceNET ---> Receiving Server Command" << endl;   
     read(descriptor, rx, sizeof(rx));
 
+    sem_post(&ServerRxSemaphore);
+
     cout << "IceNET ---> Code Word 0: " << hex << *(rx+0) << endl;
     cout << "IceNET ---> Code Word 1: " << hex << *(rx+1) << endl;
     cout << "IceNET ---> Code Word 2: " << hex << *(rx+2) << endl;
     cout << "IceNET ---> Code Word 3: " << hex << *(rx+3) << endl;
 
-
 }
 
 void Server::ProcessCommand(void)
 {
+    sem_wait(&ServerRxSemaphore);
+
     // MySQL TableOperator;
 
     // cout << "Inside ---> " << *cmd << endl;
@@ -88,9 +95,22 @@ void Server::ProcessCommand(void)
     //     ServerTerminate = 1;
     // }
 }
-   
-int Server::InitServer(void)
+
+void Server::InitSemaphores(void)
 {
+    sem_init(&ServerRxSemaphore, 0, 0);
+    sem_init(&ServerTxSemaphore, 0, 0);
+}
+
+void Server::DeleteSemaphores(void)
+{
+    sem_destroy(&ServerRxSemaphore);
+    sem_destroy(&ServerTxSemaphore);
+}
+
+int Server::RunServer(void)
+{
+    InitSemaphores();
 
     ServerSocket = socket(AF_INET, SOCK_STREAM, 0);
 
@@ -164,6 +184,8 @@ int Server::InitServer(void)
     // goto NextClient;
 
     close(ServerSocket);
+
+    DeleteSemaphores();
 
     return 0;
 }

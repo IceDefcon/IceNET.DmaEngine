@@ -37,7 +37,10 @@ class Server
 		Server();
 		~Server();
 
-		int InitServer(void);
+		void InitSemaphores(void);
+		void DeleteSemaphores(void);
+
+		int RunServer(void);
 
 		void GetCommand(int descriptor);
 		void ProcessCommand(void);

@@ -54,7 +54,7 @@ void* DmaServerThread(void* args)
 
     Server Instance;
 
-    Instance.InitServer();
+    Instance.RunServer();
 
     delay(100); // For the Tcp Server to terminate
 
