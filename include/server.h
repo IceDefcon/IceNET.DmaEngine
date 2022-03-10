@@ -21,16 +21,16 @@ class Server
 {
 	private:
 
-	_Atomic(long long int) rx[MAX_COMMAND];
-	_Atomic(long long int) tx[MAX_COMMAND];
+		_Atomic(long long int) rx[MAX_COMMAND];
+		_Atomic(long long int) tx[MAX_COMMAND];
 
-    int ServerSocket;
-    int ClientDescriptor;
+	    int ServerSocket;
+	    int ClientDescriptor;
 
-    socklen_t AddressLength;
+	    socklen_t AddressLength;
 
-    sockaddr_in ServerAddress;
-    sockaddr_in ClientAddress;
+	    sockaddr_in ServerAddress;
+	    sockaddr_in ClientAddress;
 
 	public:
 
@@ -42,8 +42,8 @@ class Server
 
 		int RunServer(void);
 
-		void GetCommand(int descriptor);
-		void ProcessCommand(void);
+		void GetRxCommand(int descriptor);
+		void ProcessRxCommand(void);
 };
 
 

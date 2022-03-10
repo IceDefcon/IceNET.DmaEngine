@@ -18,21 +18,22 @@ using namespace std;
 
 Server::Server()
 {
-    memset(rx, 0, sizeof(rx));
-    memset(tx, 0, sizeof(tx));
+        memset(rx, 0, sizeof(rx));
+        memset(tx, 0, sizeof(tx));
 
-    ServerSocket = 0;
-    ClientDescriptor = 0;
+        ServerSocket = 0;
+        ClientDescriptor = 0;
 
-    AddressLength = 0;
+        AddressLength = 0;
 
-    ServerAddress.sin_family = 0;       // Address family: AF_INET
-    ServerAddress.sin_port = 0;         // Port in network byte order
-    ServerAddress.sin_addr.s_addr = 0;  // Internet address ---> Address in network byte order
+        ServerAddress.sin_family = 0;       // Address family: AF_INET
+        ServerAddress.sin_port = 0;         // Port in network byte order
+        ServerAddress.sin_addr.s_addr = 0;  // Internet address ---> Address in network byte order
 
-    ClientAddress.sin_family = 0;
-    ClientAddress.sin_port = 0;
-    ClientAddress.sin_addr.s_addr = 0;
+        ClientAddress.sin_family = 0;
+        ClientAddress.sin_port = 0;
+        ClientAddress.sin_addr.s_addr = 0;
+
 }
 
 Server::~Server()
@@ -40,7 +41,7 @@ Server::~Server()
 
 }
 
-void Server::GetCommand(int descriptor)
+void Server::GetRxCommand(int descriptor)
 {
     bzero(rx, sizeof(rx));
     
@@ -56,7 +57,7 @@ void Server::GetCommand(int descriptor)
 
 }
 
-void Server::ProcessCommand(void)
+void Server::ProcessRxCommand(void)
 {
     sem_wait(&ServerRxSemaphore);
 
@@ -170,15 +171,14 @@ int Server::RunServer(void)
 
     NextCommand:
 
-    GetCommand(ClientDescriptor);
+    GetRxCommand(ClientDescriptor);
 
     // cout << "Rx ---> " << RxMessage << endl;
     // cout << "Rx ---> " << (RxMessage+1) << endl;
     // cout << "Rx ---> " << (RxMessage+2) << endl;
     // cout << "Rx ---> " << (RxMessage+3) << endl;
 
-    // ProcessCommand(&RxMessage[0]);
-    // ProcessCommand(&RxMessage[1]);
+    ProcessRxCommand();
 
     // goto NextCommand;
     // goto NextClient;
