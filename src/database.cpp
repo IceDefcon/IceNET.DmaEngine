@@ -15,6 +15,17 @@ using namespace std;
 	sql::Statement *stmt;
 	sql::ResultSet *res;
 
+MySQL::MySQL()
+{
+    cout << "IceNET ---> MySQL Constructor Called" << endl;
+}
+
+MySQL::~MySQL()
+{
+    cout << "IceNET ---> MySQL Destructor Called" << endl;
+}
+
+
 
 int MySQL::InitMySQL(void)
 {

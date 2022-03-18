@@ -38,7 +38,7 @@ Server::Server()
 
 Server::~Server()
 {
-
+    cout << "IceNET ---> Server Destructor Called" << endl;
 }
 
 void Server::GetRxCommand(int descriptor)

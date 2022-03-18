@@ -6,6 +6,10 @@
 class MySQL {
 
 	public:
+
+		MySQL();
+		~MySQL();
+		
 		virtual int InitMySQL(void);
 
 		virtual int CreateServerTable(void);
