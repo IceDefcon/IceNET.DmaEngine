@@ -4,7 +4,6 @@
 #include <cppconn/driver.h>
 #include <cppconn/exception.h>
 #include <cppconn/resultset.h>
-cx  z g54gtrf4rgfbn t6rh6thygbf6rndhycgvh6n jm bvgv
 #include <cppconn/statement.h>
 
 #include "database.h"
@@ -25,6 +24,7 @@ MySQL::~MySQL()
 {
     cout << "IceNET ---> MySQL Destructor Called" << endl;
 }
+
 
 
 int MySQL::InitMySQL(void)
