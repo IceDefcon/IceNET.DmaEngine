@@ -41,7 +41,7 @@ void* DmaSwitchThread(void* args)
     printf("\n");
 
     sem_post(&DmaServerSemaphore);
-    delay(100); // For the TCP Server to initialize
+    delay(2000); // For the TCP Server to initialize
     sem_post(&DmaMySQLSemaphore);
 
     return 0;
@@ -66,7 +66,7 @@ void* DmaMySQLThread(void* args)
     MySQL Dma;
 
     sem_wait(&DmaMySQLSemaphore);
-
+    cout << "IceNET ---> !!! Destroy MySQL Because database is not Initialised !!!" << endl;
     //Dma.InitMySQL();
 
     //Dma.CreateServerTable();
@@ -84,10 +84,10 @@ void InitDma(void)
     // Creating Thread
     if(pthread_create(&DmaSwitch,NULL,&DmaSwitchThread,NULL) != 0) perror("Failed to create Switch thread");
     if(pthread_create(&DmaServer,NULL,&DmaServerThread,NULL) != 0) perror("Failed to create Work thread");
-    if(pthread_create(&DmaMySQL,NULL,&DmaMySQLThread,NULL) != 0) perror("Failed to create Work thread");
+    if(pthread_create(&DmaMySQL,NULL, &DmaMySQLThread,NULL)  != 0) perror("Failed to create Work thread");
     if(pthread_join(DmaSwitch, NULL) != 0) perror("pthread_create() error");
     if(pthread_join(DmaServer, NULL) != 0) perror("pthread_create() error");
-    if(pthread_join(DmaMySQL, NULL) != 0) perror("pthread_create() error");
+    if(pthread_join(DmaMySQL, NULL)  != 0) perror("pthread_create() error");
 
     sem_destroy(&DmaSwitchSemaphore);
     sem_destroy(&DmaServerSemaphore);
